@@ -1,0 +1,29 @@
+# 🔐 gitleaks config: the built-in rules (API keys, tokens, private keys…)
+# plus Arduino-style credentials the defaults miss, like
+#   #define WIFI_PASSWORD "hunter2"   or   const char* ssid = "MyHomeWiFi";
+# Placeholders such as "your-password" are allowed so example configs pass.
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "arduino-credential-define"
+description = "WiFi/MQTT/API credential in a #define"
+regex = '''(?i)#define\s+\w*(?:pass|pwd|psk|ssid|secret|token|api_?key|auth)\w*\s+"([^"]+)"'''
+secretGroup = 1
+keywords = ["pass", "pwd", "psk", "ssid", "secret", "token", "key", "auth"]
+
+  [[rules.allowlists]]
+  regexTarget = "secret"
+  regexes = ['''(?i)^(?:your[-_ ]?.*|my[-_ ]?(?:wifi|ssid|password|network).*|change[-_ ]?me|x{3,}|\*{3,}|<[^>]*>|\.{3}|…|example.*|placeholder|todo|ssid|password)$''']
+
+[[rules]]
+id = "arduino-credential-variable"
+description = "WiFi/MQTT/API credential in a string variable"
+regex = '''(?i)(?:char\s*\*?|String|auto)\s*(?:const\s+)?\w*(?:pass|pwd|psk|ssid|secret|token|api_?key|auth)\w*\s*(?:\[\s*\d*\s*\])?\s*=\s*"([^"]+)"'''
+secretGroup = 1
+keywords = ["pass", "pwd", "psk", "ssid", "secret", "token", "key", "auth"]
+
+  [[rules.allowlists]]
+  regexTarget = "secret"
+  regexes = ['''(?i)^(?:your[-_ ]?.*|my[-_ ]?(?:wifi|ssid|password|network).*|change[-_ ]?me|x{3,}|\*{3,}|<[^>]*>|\.{3}|…|example.*|placeholder|todo|ssid|password)$''']
