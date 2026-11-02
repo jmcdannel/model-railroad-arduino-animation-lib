@@ -1,6 +1,3 @@
-# 🔐 per-layout secrets (WiFi, MQTT) — copy config.example.h instead
-room-code/config.h
-
 # 🛠️ build output
 build/
 *.bin
