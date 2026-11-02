@@ -35,30 +35,42 @@ Until then they're marked 🧪 in the README.
 costs about 1 KB of flash per effect versus the old constants, and is what
 lets a web page change them later.)
 
-## 2️⃣ Web configurator and installer
+## ✅ Phase 2: web configurator and installer (built)
 
-One page on GitHub Pages. You pick effects, pins, start modes and tuning,
-then choose how to get it onto the board:
+One page on GitHub Pages (`web/`, deployed by `.github/workflows/pages.yml`).
+You pick effects, pins, start modes and settings, then either:
 
-- **⚡ Install to Nano from the browser** (Chrome or Edge on desktop): the page
-  flashes a prebuilt "universal" firmware over USB with Web Serial, then
-  sends your settings to the Nano, which stores them in EEPROM. You can
-  re-configure later without reflashing, and you never install the Arduino
-  IDE.
-- **📋 Copy & paste commands** (any browser, any OS): the page generates your
-  `config.h` and the exact `arduino-cli` commands to compile and upload it.
+- **⚡ Install to Nano** (Chrome or Edge on desktop): the page downloads a
+  prebuilt firmware, writes your settings into it, and flashes it over USB
+  with Web Serial (STK500, new or old bootloader).
+- **📋 Build it yourself** (any browser): the page generates a readable
+  sketch and the `arduino-cli` commands to build it, for any combination.
 
-Both come from the same choices on the same page. The page also checks the
-pin plan (PWM pins, Servo timer conflicts, pins used twice) before you
-install.
+**How it fits on a Nano.** Phase 1 measured all twelve effects at 97% of
+flash, so there's no single "everything" firmware. Instead:
 
-**Measured in Phase 1:** all twelve effects in one sketch take 29.9 KB of
-the Nano's 30 KB (97%) and 79% of RAM, before any settings code. So one
-universal firmware with everything won't fit as-is. Options to weigh:
-several prebuilt firmwares (e.g. "lights", "crossing + sound", "scenery"),
-building the firmware on demand in the cloud, or slimming the effects
-(dropping float math). Also to settle: the bootloader choice for older
-Nanos and clones (Nano vs. "old bootloader" baud rates).
+- **Prebuilt firmwares** for every single effect plus four themed sets
+  (`web/js/bundles.js`), the biggest 13 KB.
+- **A settings block in flash.** Each firmware keeps every pin, start mode
+  and setting in one `SETTINGS` block in flash, marked `MRACFG`. The page
+  writes your values into that block before flashing. That replaces the
+  EEPROM plan: there's no settings protocol on the Arduino, and nothing
+  extra to keep in RAM.
+- **One generator.** It writes both the prebuilt firmwares (CI) and the
+  copy-and-paste sketches (page) from a schema read straight from the
+  `Config` structs in `src/`, so the page can't drift from the code.
+
+**Checked in CI:**
+- the published blocks match the page's encoder byte for byte,
+- randomized settings (floats, enums, negative numbers) match byte for byte,
+- every copy-and-paste sketch compiles,
+- the flasher passes against a fake bootloader (`test/`).
+
+**Still to do:**
+- 🔌 Flash a real Nano from the page, on both a new-bootloader Nano and an
+  old-bootloader clone. The protocol is tested, but the reset timing over
+  Web Serial needs a real board.
+- More themed sets, if people ask for particular combinations.
 
 ## 3️⃣ Share it
 

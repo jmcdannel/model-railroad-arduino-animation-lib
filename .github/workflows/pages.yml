@@ -1,0 +1,59 @@
+# 🌐 Builds the installer firmwares and publishes the configurator to GitHub
+# Pages on every push to main.
+name: Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build site
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup-arduino
+
+      - name: 🏗️ Build the installer firmwares
+        run: node tools/build-firmware.mjs build/firmware --compile
+
+      - name: 🔍 Check the firmwares match the page
+        run: node tools/check-firmware.mjs build/firmware
+
+      - name: 📦 Assemble the site
+        run: |
+          mkdir -p site
+          cp -R web/. site/
+          rm -rf site/firmware site/package.json
+          cp -R build/firmware/hex site/firmware
+
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: site
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

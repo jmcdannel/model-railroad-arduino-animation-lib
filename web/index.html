@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Layout Effects Configurator</title>
+  <meta name="description" content="Pick model railroad effects, wire them to an Arduino Nano, and install from the browser or copy the arduino-cli commands.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@400;500&family=Saira+Semi+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%233E4A40'/%3E%3Ccircle cx='11' cy='16' r='5' fill='%23E24A33'/%3E%3Ccircle cx='21' cy='16' r='5' fill='%2346B07A'/%3E%3C/svg%3E">
+</head>
+<body>
+  <header class="masthead">
+    <div class="plate plate--title">
+      <h1>Layout effects configurator</h1>
+      <p>Choose effects for one Arduino Nano, wire each to its own pins and trigger, then install it from this page or copy the commands.</p>
+    </div>
+    <a class="repo-link" href="https://github.com/jmcdannel/model-railroad-arduino-animation-lib">Source and wiring guides on GitHub</a>
+  </header>
+
+  <main class="console">
+    <section class="levers" aria-labelledby="levers-title">
+      <h2 id="levers-title" class="section-title">Effects on this board</h2>
+      <p class="hint">Switch on the effects you want. Several can share one Nano.</p>
+      <div id="lever-bank" class="lever-bank"></div>
+    </section>
+
+    <section class="work" aria-live="polite">
+      <div id="empty" class="empty">
+        <p>Nothing on the board yet. Switch on an effect to wire it up.</p>
+      </div>
+      <div id="effect-plates"></div>
+
+      <section id="board-section" class="board-section" aria-labelledby="board-title" hidden>
+        <h2 id="board-title" class="section-title">Pin plan</h2>
+        <div id="board" class="board" role="img" aria-label="Arduino Nano pins and what uses them"></div>
+        <ul id="problems" class="problems"></ul>
+      </section>
+
+      <section id="outputs" class="outputs" hidden>
+        <div class="plate plate--output" id="install-plate">
+          <h2 class="section-title">Install to Nano</h2>
+          <div id="install-body"></div>
+        </div>
+        <div class="plate plate--output" id="commands-plate">
+          <h2 class="section-title">Build it yourself</h2>
+          <p class="hint">Paste into a terminal (macOS or Linux) with <a href="https://arduino.github.io/arduino-cli/latest/installation/">arduino-cli</a> and git installed. On Windows, download the sketch and open it in the Arduino IDE with this library installed.</p>
+          <div class="row">
+            <label class="field field--inline">Bootloader
+              <select id="bootloader-cmd">
+                <option value="new">Nano (new bootloader)</option>
+                <option value="old">Nano clone (old bootloader)</option>
+              </select>
+            </label>
+            <button type="button" class="btn" id="copy-commands">Copy commands</button>
+            <button type="button" class="btn btn--quiet" id="download-sketch">Download sketch</button>
+          </div>
+          <pre class="code"><code id="commands"></code></pre>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p>MIT licensed. Effects run from power-up, from a DEJA.js IO pin, a sensor, or a button.</p>
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -18,3 +18,6 @@ build/
 
 # 🍎 macOS
 .DS_Store
+
+# 🌐 installer firmware built locally (CI builds the published copy)
+web/firmware/

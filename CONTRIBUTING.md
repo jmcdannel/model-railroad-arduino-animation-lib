@@ -98,6 +98,32 @@ Compile from the repo root without installing anything:
 arduino-cli compile --fqbn arduino:avr:nano --library . examples/my-effect
 ```
 
+## 🌐 The web configurator
+
+The page lives in `web/` (plain HTML, CSS and JavaScript modules, no build
+step) and the tools that feed it in `tools/`.
+
+- `web/js/schema.js` is **generated** from the `Config` structs and
+  constructors in `src/`. After changing an effect's settings, run
+  `node tools/gen-schema.mjs` (CI fails if you forget).
+- `web/js/effects.js` is the catalog: names, pin labels (and which pins
+  fade), key settings, links between effects. A new effect needs an entry
+  here and, for one-click install, one in `web/js/bundles.js`.
+- Keep the header style the generator reads: one field (or a comma list of
+  the same type) per line, `type name = default;  // help text`.
+
+Try it locally:
+
+```sh
+node --test test/*.test.mjs                            # generator + flasher tests
+node tools/build-firmware.mjs build/firmware --compile # prebuilt firmwares
+node tools/check-firmware.mjs build/firmware           # page ↔ firmware byte check
+cp -R build/firmware/hex web/firmware && (cd web && python3 -m http.server 8765)
+```
+
+Then open http://localhost:8765 in Chrome or Edge. (`web/firmware/` is
+git-ignored; CI builds the published copy.)
+
 ## 🙏 Borrowed code and ideas
 
 Credit generously, and copy carefully.

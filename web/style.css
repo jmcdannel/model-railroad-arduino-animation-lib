@@ -1,0 +1,252 @@
+/* 🚂 A dispatcher's control panel: machine-green board, engraved plates,
+   lever switches and lamps. The Nano pin panel is the one loud element. */
+:root {
+  --panel: #3e4a40;
+  --panel-deep: #334037;
+  --plate: #1f2420;
+  --plate-edge: #4a554c;
+  --letter: #e9e2cf;
+  --letter-dim: #b9b5a6;
+  --brass: #b48e45;
+  --brass-bright: #d3ad62;
+  --lamp-red: #e24a33;
+  --lamp-amber: #f0b23a;
+  --lamp-green: #46b07a;
+  --lamp-white: #dce4ee;
+  --lamp-off: #232a25;
+  --field: #f3efe3;
+  --field-ink: #1f2420;
+  --focus: #f0b23a;
+  --radius-plate: 4px;
+  --radius-control: 10px;
+  --font-plate: 'Saira Semi Condensed', 'Arial Narrow', sans-serif;
+  --font-body: 'Atkinson Hyperlegible', system-ui, sans-serif;
+  --font-code: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  background: var(--panel);
+  color: var(--letter);
+  font: 17px/1.55 var(--font-body);
+  /* faint rivet-spaced panel seams */
+  background-image:
+    linear-gradient(var(--panel-deep) 1px, transparent 1px),
+    linear-gradient(90deg, var(--panel-deep) 1px, transparent 1px);
+  background-size: 100% 240px, 320px 100%;
+}
+
+a { color: var(--brass-bright); }
+a:hover { color: var(--letter); }
+
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+h1, h2, h3 { font-family: var(--font-plate); font-weight: 600; line-height: 1.15; margin: 0; }
+
+/* ---------------------------------------------------------- plates */
+.plate {
+  background: var(--plate);
+  border: 1px solid var(--plate-edge);
+  border-radius: var(--radius-plate);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 2px 0 var(--panel-deep);
+  padding: 20px 22px;
+}
+
+.masthead {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 28px 16px 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px 24px;
+}
+.plate--title { max-width: 720px; }
+.plate--title h1 { font-size: clamp(30px, 4.4vw, 46px); letter-spacing: 0.01em; }
+.plate--title p { margin: 8px 0 0; color: var(--letter-dim); max-width: 62ch; }
+.repo-link { font-size: 15px; }
+
+.console {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: minmax(250px, 300px) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.section-title { font-size: 22px; }
+.hint { color: var(--letter-dim); font-size: 15px; margin: 6px 0 14px; max-width: 70ch; }
+
+/* ---------------------------------------------------- lever bank */
+.levers { position: sticky; top: 12px; }
+.lever-bank { display: grid; gap: 6px; }
+
+.lever {
+  display: grid;
+  grid-template-columns: 22px 1fr 28px;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  color: var(--letter);
+  background: var(--plate);
+  border: 1px solid var(--plate-edge);
+  border-radius: var(--radius-plate);
+  padding: 9px 12px;
+  cursor: pointer;
+}
+.lever:hover { border-color: var(--brass); }
+.lever__lamp {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--lamp-off);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+.lever__name { font-family: var(--font-plate); font-weight: 600; font-size: 17px; }
+.lever__handle {
+  width: 26px; height: 14px; border-radius: 7px;
+  background: var(--panel-deep);
+  position: relative;
+}
+.lever__handle::after {
+  content: ''; position: absolute; top: 1px; left: 1px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--brass);
+  transition: transform 120ms ease;
+}
+.lever[aria-pressed='true'] .lever__lamp { background: var(--lamp, var(--lamp-green)); box-shadow: 0 0 8px var(--lamp, var(--lamp-green)); }
+.lever[aria-pressed='true'] .lever__handle::after { transform: translateX(12px); background: var(--brass-bright); }
+
+/* --------------------------------------------------- effect plates */
+.work { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; min-width: 0; }
+.empty { border: 2px dashed var(--plate-edge); border-radius: var(--radius-plate); padding: 28px; color: var(--letter-dim); }
+#effect-plates { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+
+.fx { border-left: 6px solid var(--lamp, var(--lamp-green)); }
+.fx__head { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; flex-wrap: wrap; }
+.fx__head h2 { font-size: 26px; }
+.fx__blurb { color: var(--letter-dim); margin: 4px 0 14px; }
+.fx__remove { font-size: 14px; }
+
+.group { margin-top: 14px; }
+.group h3 { font-size: 17px; color: var(--brass-bright); margin-bottom: 8px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px 14px; }
+
+.field { display: grid; gap: 4px; font-size: 15px; color: var(--letter); }
+.field--inline { display: inline-grid; }
+.field small { color: var(--letter-dim); font-size: 13px; line-height: 1.35; }
+.field--check { grid-template-columns: auto 1fr; align-items: start; column-gap: 8px; }
+.field--check small { grid-column: 2; }
+.field.is-bad select { outline: 2px solid var(--lamp-red); }
+
+select, input[type='number'] {
+  font: 16px var(--font-body);
+  color: var(--field-ink);
+  background: var(--field);
+  border: 1px solid #8f8a78;
+  border-radius: var(--radius-control);
+  padding: 6px 10px;
+  min-height: 38px;
+  width: 100%;
+}
+input[type='checkbox'] { width: 20px; height: 20px; accent-color: var(--brass); margin-top: 2px; }
+
+details.more { margin-top: 12px; }
+details.more summary { cursor: pointer; color: var(--brass-bright); font-weight: 700; }
+details.more[open] summary { margin-bottom: 10px; }
+
+/* -------------------------------------------------- the lamp panel */
+.board-section { padding: 0; }
+.board {
+  margin-top: 10px;
+  background: #18301f;
+  border: 1px solid #0f1f14;
+  border-radius: 6px;
+  padding: 16px 14px 14px;
+  overflow-x: auto;
+  box-shadow: inset 0 0 0 3px #22402b;
+}
+.board__row { display: flex; gap: 6px; min-width: max-content; }
+.board__row + .board__row { margin-top: 10px; }
+.board__chip {
+  margin: 8px 0;
+  font-family: var(--font-plate);
+  color: #9fb8a3;
+  font-size: 15px;
+}
+.pin { width: 54px; display: grid; justify-items: center; gap: 4px; }
+.pin__lamp {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--lamp-off);
+  border: 2px solid #c9b27a;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.7);
+}
+.pin__name { font-family: var(--font-plate); font-weight: 600; font-size: 15px; color: var(--letter); }
+.pin__use { font-size: 11px; color: #9fb8a3; text-align: center; line-height: 1.2; min-height: 2.4em; max-width: 54px; overflow-wrap: anywhere; }
+.pin--pwm .pin__name::after { content: '~'; color: var(--brass-bright); margin-left: 1px; }
+.pin--used .pin__lamp { background: var(--lamp); box-shadow: 0 0 10px var(--lamp); border-color: var(--lamp); }
+.pin--bad .pin__lamp { background: var(--lamp-red); box-shadow: 0 0 12px var(--lamp-red); border-color: var(--lamp-red); animation: alarm 900ms steps(2, jump-none) infinite; }
+.pin--reserved .pin__lamp { background: #556058; border-style: dashed; }
+@keyframes alarm { 50% { background: #5a1d14; box-shadow: none; } }
+@media (prefers-reduced-motion: reduce) { .pin--bad .pin__lamp { animation: none; } .lever__handle::after { transition: none; } }
+
+.board__legend { margin-top: 10px; color: #9fb8a3; font-size: 13px; }
+
+.problems { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 6px; }
+.problems li { background: #4b1f17; border-left: 4px solid var(--lamp-red); padding: 8px 12px; border-radius: 3px; }
+.problems li.ok { background: #1d3a27; border-left-color: var(--lamp-green); }
+
+/* -------------------------------------------------------- outputs */
+.outputs { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+.plate--output .section-title { font-size: 24px; margin-bottom: 6px; }
+.row { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: end; margin: 8px 0 12px; }
+
+.btn {
+  font: 700 16px var(--font-body);
+  color: var(--plate);
+  background: var(--brass-bright);
+  border: 1px solid var(--brass);
+  border-radius: var(--radius-control);
+  padding: 9px 18px;
+  min-height: 42px;
+  cursor: pointer;
+}
+.btn:hover { background: #e3c27b; }
+.btn:disabled { background: #6d6a5f; border-color: #6d6a5f; color: #2b2f2c; cursor: not-allowed; }
+.btn--quiet { background: transparent; color: var(--brass-bright); }
+.btn--quiet:hover { background: rgba(211, 173, 98, 0.12); }
+.btn--big { font-size: 18px; padding: 12px 26px; }
+
+.code {
+  margin: 0;
+  background: #121512;
+  border: 1px solid var(--plate-edge);
+  border-radius: var(--radius-plate);
+  padding: 14px 16px;
+  overflow: auto;
+  max-height: 420px;
+  font: 13.5px/1.5 var(--font-code);
+  color: #d9dfcf;
+}
+
+.steps { margin: 6px 0 12px; padding-left: 22px; }
+.steps li { margin: 4px 0; }
+.progress { height: 12px; background: var(--panel-deep); border-radius: 6px; overflow: hidden; margin: 12px 0 8px; }
+.progress__bar { height: 100%; width: 0; background: var(--lamp-green); transition: width 120ms linear; }
+.log { font: 13px/1.5 var(--font-code); color: var(--letter-dim); white-space: pre-wrap; margin: 0; }
+.notice { border-left: 4px solid var(--lamp-amber); padding: 6px 12px; background: rgba(240, 178, 58, 0.08); margin: 10px 0; }
+.notice--bad { border-left-color: var(--lamp-red); background: rgba(226, 74, 51, 0.12); }
+
+.foot { max-width: 1240px; margin: 0 auto; padding: 8px 16px 40px; color: var(--letter-dim); font-size: 14px; }
+
+@media (max-width: 860px) {
+  .console { grid-template-columns: 1fr; }
+  .levers { position: static; }
+  .lever-bank { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+}

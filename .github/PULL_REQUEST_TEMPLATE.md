@@ -12,5 +12,6 @@
 - [ ] Tested on real hardware (say which board), or marked "compile-only" above
 - [ ] New/changed effect: module in `src/`, example + README with a wiring table, a row in the top-level README, an entry in `examples/multi-effect/`
 - [ ] Tuning in `Config`, non-blocking `update(now, on)` (no `delay()`), off behavior documented
+- [ ] Changed an effect's settings? Ran `node tools/gen-schema.mjs`, and `node --test test/*.test.mjs` passes
 - [ ] Borrowed code or ideas are credited in `CREDITS.md`, and any copied code is under a compatible license (see CONTRIBUTING.md)
 - [ ] 🔐 No WiFi passwords, IP addresses, tokens or other secrets (use `arduino_secrets.h`, which is gitignored)
