@@ -57,6 +57,42 @@
         ],
         "createdAt": "2026-11-02T19:33:51.248Z",
         "reason": "Claude: decision-round sketch, never shipped; the same defect was fixed in the built page"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/assigned.html"
+        ],
+        "createdAt": "2026-11-02T19:48:25.841Z",
+        "reason": "Claude: unchosen decision-round sketch with its own direction's fonts; git-ignored, never shipped"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/canon.html"
+        ],
+        "createdAt": "2026-11-02T19:48:25.869Z",
+        "reason": "Claude: unchosen decision-round sketch with its own direction's fonts; git-ignored, never shipped"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-timetable.html"
+        ],
+        "createdAt": "2026-11-02T19:48:25.896Z",
+        "reason": "Claude: unchosen decision-round sketch with its own direction's fonts; git-ignored, never shipped"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-warm-app.html"
+        ],
+        "createdAt": "2026-11-02T19:48:25.922Z",
+        "reason": "Claude: unchosen decision-round sketch with its own direction's fonts; git-ignored, never shipped"
       }
     ]
   }
