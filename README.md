@@ -5,6 +5,22 @@ effect is a small module that runs on its own Arduino Nano **or** alongside
 others on one board, and each one can start at power-up, follow a DEJA.js
 IO pin or sensor, or toggle from a button.
 
+## 🌐 Configure and install from the browser
+
+**[Open the configurator](https://jmcdannel.github.io/model-railroad-arduino-animation-lib/)**:
+switch on the effects you want on one Nano, pick pins (a lamp panel shows
+the plan and flags clashes), choose how each one starts, and tune it. Then:
+
+- **⚡ Install to Nano** (Chrome or Edge on a desktop): plug in the Nano and
+  click Install. The page writes your settings into a prebuilt firmware and
+  flashes it over USB. No Arduino IDE needed. Works for any single effect
+  and a few ready-made sets (storm with thunder, crossing gates with bell,
+  town at night, industry).
+- **📋 Build it yourself** (any browser): copy the generated `arduino-cli`
+  commands, or download the sketch, for any combination of effects.
+
+## 🎬 Effects
+
 | Effect | What it does | Status |
 |--------|--------------|--------|
 | [🔥 Arc welder](examples/welder/) | blue/white arc flicker, red cooling glow | ✅ on the layout (older standalone build) |
@@ -122,9 +138,8 @@ them in software instead.
 
 ## 🗺️ What's next
 
-A web page that configures your board and either installs it straight
-from the browser or gives you the `arduino-cli` commands to copy. See
-[ROADMAP.md](ROADMAP.md).
+Flashing the new effects on real hardware, then listing the library in the
+Arduino Library Manager. See [ROADMAP.md](ROADMAP.md).
 
 ## 🤝 Contributing
 
