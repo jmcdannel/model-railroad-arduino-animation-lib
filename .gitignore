@@ -1,3 +1,15 @@
+# 🔐 secrets: never commit these (see CONTRIBUTING.md → Secrets)
+arduino_secrets.h
+secrets.h
+*_secrets.h
+*.secret
+*.secret.*
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
 # 🛠️ build output
 build/
 *.bin

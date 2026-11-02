@@ -1,0 +1,87 @@
+# 🚦 Required checks for every PR into main (see the "main" ruleset).
+# Third-party code is pinned: actions by commit SHA, tools by version + SHA-256.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  secret-scan:
+    name: Secret scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GITLEAKS_VERSION: 8.30.1
+      GITLEAKS_SHA256: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # 🕰️ scan every commit, not just the last one
+          persist-credentials: false
+
+      - name: 🔐 Install gitleaks
+        run: |
+          curl -sSfLo gitleaks.tgz "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          echo "${GITLEAKS_SHA256}  gitleaks.tgz" | sha256sum -c -
+          tar -xzf gitleaks.tgz gitleaks && sudo mv gitleaks /usr/local/bin/ && rm gitleaks.tgz
+
+      - name: 🔍 Scan full history
+        run: gitleaks git --config .gitleaks.toml --redact --no-banner -v .
+
+  compile:
+    name: Compile sketches
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      ARDUINO_CLI_VERSION: 1.5.1
+      ARDUINO_CLI_SHA256: 28a8e119c498a25607821c36cb2dc49e8463941b261a0d99091baa7bc692dd2b
+      AVR_CORE: arduino:avr@1.8.6
+      FQBN: arduino:avr:nano
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: 🛠️ Install arduino-cli + AVR core
+        run: |
+          curl -sSfLo cli.tgz "https://github.com/arduino/arduino-cli/releases/download/v${ARDUINO_CLI_VERSION}/arduino-cli_${ARDUINO_CLI_VERSION}_Linux_64bit.tar.gz"
+          echo "${ARDUINO_CLI_SHA256}  cli.tgz" | sha256sum -c -
+          tar -xzf cli.tgz arduino-cli && sudo mv arduino-cli /usr/local/bin/ && rm cli.tgz
+          arduino-cli core update-index
+          arduino-cli core install "$AVR_CORE"
+
+      - name: 🧪 Compile every sketch for the Nano
+        run: |
+          {
+            echo "## 📏 Sketch sizes (Arduino Nano: 30,720 B flash, 2,048 B RAM)"
+            echo
+            echo "| Sketch | Flash | RAM |"
+            echo "|---|---|---|"
+          } >> "$GITHUB_STEP_SUMMARY"
+          status=0
+          for ino in $(git ls-files '*.ino'); do
+            dir=$(dirname "$ino")
+            echo "::group::$dir"
+            if out=$(arduino-cli compile --fqbn "$FQBN" --warnings default "$dir" 2>&1); then
+              echo "$out"
+              flash=$(echo "$out" | sed -nE 's/^Sketch uses ([0-9]+) bytes \(([0-9]+)%\).*/\1 B (\2%)/p')
+              ram=$(echo "$out" | sed -nE 's/^Global variables use ([0-9]+) bytes \(([0-9]+)%\).*/\1 B (\2%)/p')
+              echo "| \`$dir\` | $flash | $ram |" >> "$GITHUB_STEP_SUMMARY"
+            else
+              echo "$out"
+              echo "::error file=$ino::$dir failed to compile"
+              echo "| \`$dir\` | ❌ failed | |" >> "$GITHUB_STEP_SUMMARY"
+              status=1
+            fi
+            echo "::endgroup::"
+          done
+          exit $status

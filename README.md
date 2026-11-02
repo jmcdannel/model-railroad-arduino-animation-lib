@@ -47,8 +47,18 @@ circuit: the Nano's internal pull-up does the rest.
 | 🚦 Crossing | sensors + button only | flashers run while asserted + hold |
 | 🚥 Traffic light | night-flash (or dark) | normal cycle via all-red |
 
-Ideas on deck: neon sign, fluorescent startup, rotating beacon, servo
-crossing gates, crossing bell / thunder via DFPlayer, day-night room lighting.
+## 🗺️ What's next
+
+Neon sign, fluorescent startup, rotating beacon, servo crossing gates,
+DFPlayer sound (crossing bell, thunder) and day-night room lighting, plus
+running several effects on one Nano and a web page that installs them from
+the browser. See [ROADMAP.md](ROADMAP.md).
+
+## 🤝 Contributing
+
+New effects and fixes are welcome: see [CONTRIBUTING.md](CONTRIBUTING.md).
+🔐 Never commit WiFi passwords or keys; [SECURITY.md](SECURITY.md) explains
+what to do if one slips out.
 
 ## 🙏 Credits
 

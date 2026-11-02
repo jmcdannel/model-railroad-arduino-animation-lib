@@ -1,0 +1,26 @@
+name: 💡 Effect idea
+description: Suggest a new animation for the layout
+labels: [new effect]
+body:
+  - type: textarea
+    id: scene
+    attributes:
+      label: What should it look like?
+      description: Describe the scene and what the prototype does, e.g. "a diner's neon sign that buzzes on at dusk, one letter flickers".
+    validations:
+      required: true
+  - type: textarea
+    id: hardware
+    attributes:
+      label: Hardware
+      description: LEDs, servos, sound module… and anything you already own.
+  - type: textarea
+    id: trigger
+    attributes:
+      label: How should it start?
+      description: Power-up, a button, a sensor, DEJA.js / DCC, another effect…
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: Videos of the real thing, or existing sketches (with links so we can credit them).

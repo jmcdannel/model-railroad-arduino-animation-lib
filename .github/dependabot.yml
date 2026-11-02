@@ -1,0 +1,11 @@
+# 🤖 Keep the pinned GitHub Actions up to date (bumps the SHA + version comment).
+# gitleaks and arduino-cli in ci.yml are pinned by hand: bump the version and
+# SHA-256 together.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: "⬆️"

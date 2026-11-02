@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 🔐 Report a security problem or a leaked secret
+    url: https://github.com/jmcdannel/model-railroad-arduino-animation-lib/security/advisories/new
+    about: Please report privately, not in a public issue.
