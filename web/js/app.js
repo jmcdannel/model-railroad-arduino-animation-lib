@@ -12,6 +12,12 @@ const LAMPS = ['#46b07a', '#f0b23a', '#dce4ee', '#6fb3dd', '#d08fdf', '#e9905e',
 const lampOf = (id) => LAMPS[EFFECTS.findIndex((e) => e.id === id) % LAMPS.length]
 const STORE = 'mra-configurator-v1'
 const $ = (sel) => document.querySelector(sel)
+let lastAnnounced = ''
+function announce(text) {
+  if (text === lastAnnounced) return
+  lastAnnounced = text
+  $('#announcer').textContent = text
+}
 
 // ------------------------------------------------------------ state 💾
 let state = load()
@@ -84,8 +90,12 @@ function renderLevers() {
       b.className = 'lever'
       b.dataset.id = fx.id
       b.style.setProperty('--lamp', lampOf(fx.id))
-      b.innerHTML = `<span class="lever__lamp" aria-hidden="true"></span><span class="lever__name">${fx.emoji} ${fx.title}</span><span class="lever__handle" aria-hidden="true"></span>`
-      b.title = fx.blurb
+      b.innerHTML = `<span class="lamp lever__lamp" aria-hidden="true"></span>
+        <span class="lever__name" id="lever-${fx.id}"><span aria-hidden="true">${fx.emoji}</span> ${fx.title}</span>
+        <span class="lever__handle" aria-hidden="true"></span>
+        <span class="lever__blurb" id="lever-${fx.id}-blurb">${fx.blurb}</span>`
+      b.setAttribute('aria-labelledby', `lever-${fx.id}`)
+      b.setAttribute('aria-describedby', `lever-${fx.id}-blurb`)
       b.addEventListener('click', () => toggleEffect(fx.id))
       bank.append(b)
     }
@@ -120,8 +130,8 @@ function plateFor(e) {
   const el = document.createElement('article')
   el.className = 'plate fx'
   el.style.setProperty('--lamp', lampOf(e.id))
-  el.innerHTML = `<div class="fx__head"><h2>${fx.emoji} ${fx.title}</h2>
-    <button type="button" class="btn btn--quiet fx__remove">Remove</button></div>
+  el.innerHTML = `<div class="fx__head"><h2><span class="lamp lamp--lit fx__lamp" aria-hidden="true"></span><span><span aria-hidden="true">${fx.emoji}</span> ${fx.title}</span></h2>
+    <button type="button" class="btn btn--quiet fx__remove" aria-label="Remove ${fx.title}">Remove</button></div>
     <p class="fx__blurb">${fx.blurb}</p>`
   el.querySelector('.fx__remove').addEventListener('click', () => toggleEffect(e.id))
 
@@ -300,6 +310,7 @@ function renderBoard() {
     <p class="board__legend">~ marks the PWM pins that can fade. A6 and A7 can't be used as digital pins.</p>`
   const list = $('#problems')
   list.innerHTML = problems.length ? problems.map((p) => `<li>${p.text}</li>`).join('') : '<li class="ok">Pin plan looks good: no clashes.</li>'
+  announce(problems.length ? `Pin plan: ${problems.length} problem${problems.length > 1 ? 's' : ''} to fix.` : 'Pin plan looks good.')
   document.querySelectorAll('select[data-pin]').forEach((s) => s.closest('.field').classList.toggle('is-bad', bad.has(Number(s.value))))
 }
 
@@ -347,8 +358,8 @@ function renderInstall() {
       </label>
       <button type="button" class="btn btn--big" id="install" ${ready ? '' : 'disabled'}>Install${bundle ? ` ${bundle.title}` : ''}</button>
     </div>
-    <div class="progress" hidden><div class="progress__bar"></div></div>
-    <pre class="log" id="install-log"></pre>`)
+    <div class="progress" hidden role="progressbar" aria-label="Install progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress__bar"></div></div>
+    <pre class="log" id="install-log" role="log" aria-live="polite"></pre>`)
   body.innerHTML = parts.join('')
   const sel = $('#bootloader-install')
   sel.value = state.bootloader
@@ -382,7 +393,13 @@ async function install() {
     const port = await navigator.serial.requestPort()
     transport = new WebSerialTransport(port)
     await transport.open(BAUD[state.bootloader])
-    await new Stk500(transport, { log }).flash(image, { onProgress: (p) => { bar.style.width = `${Math.round(p * 100)}%` } })
+    await new Stk500(transport, { log }).flash(image, {
+      onProgress: (p) => {
+        const pct = Math.round(p * 100)
+        bar.style.width = `${pct}%`
+        $('.progress').setAttribute('aria-valuenow', String(pct))
+      },
+    })
     log('🚂 installed. Disconnect the USB cable whenever you like.')
   } catch (err) {
     if (err?.name === 'NotFoundError') log('No port chosen. Select Install again when the Nano is plugged in.')
@@ -397,7 +414,7 @@ async function install() {
 // copy / download
 $('#copy-commands').addEventListener('click', async () => {
   const b = $('#copy-commands')
-  try { await navigator.clipboard.writeText(commandsText()); b.textContent = 'Copied' } catch { b.textContent = 'Select the text and copy it' }
+  try { await navigator.clipboard.writeText(commandsText()); b.textContent = 'Copied'; announce('Commands copied.') } catch { b.textContent = 'Select the text and copy it' }
   setTimeout(() => { b.textContent = 'Copy commands' }, 2000)
 })
 $('#download-sketch').addEventListener('click', () => {
