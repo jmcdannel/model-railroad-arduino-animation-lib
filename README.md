@@ -12,7 +12,6 @@ to run from power-up with no buttons, no libraries and no fuss.
 | [⛈️ Lightning storm](lightning/) — strike clusters, active/quiet spells, thunder trigger out | Nano | ✅ compiled + simulated, D12 trigger |
 | [🚦 Grade crossing](crossing/) — 50 fpm flashers, 1–2 IR sensors and/or button | Nano | ✅ compiled + simulated, D12 trigger |
 | [🚥 Traffic light](traffic-light/) — single head or synced 4-way, night flash mode | Nano | ✅ compiled + simulated, D12 trigger |
-| [🪧 Room code sign](room-code/) — join QR + DEJA room code, now running, track power, server pages (BOOT button), status LED (WiFi + MQTT) | ESP32-C6-LCD-1.47 · ESP32 + 0.96" OLED (code page only) | ✅ live on the layout (C6); OLED build flashed |
 
 Every sketch: one folder, one `.ino`, a README with a wiring table, tuning
 constants at the top, non-blocking `millis()` timing. Verified with
@@ -53,9 +52,7 @@ crossing gates, crossing bell / thunder via DFPlayer, day-night room lighting.
 
 ## 🙏 Credits
 
-The QR generator in `room-code/` is vendored from
-[ricmoo/QRCode](https://github.com/ricmoo/QRCode) (MIT, Richard Moore and
-Project Nayuki). The arc welder is inspired by the classic Steve Spence,
+The arc welder is inspired by the classic Steve Spence,
 Bradt (*Model Railroader*) and Cornhill & Atherton (*MRH*) welder sketches.
 Full details are in [CREDITS.md](CREDITS.md).
 
