@@ -21,3 +21,7 @@ build/
 
 # 🌐 installer firmware built locally (CI builds the published copy)
 web/firmware/
+
+# 🎨 Impeccable working files (decision mocks, review captures)
+.impeccable/mocks/
+.impeccable/review/
