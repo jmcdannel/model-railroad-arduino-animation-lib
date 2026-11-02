@@ -1,0 +1,11 @@
+# 🔐 per-layout secrets (WiFi, MQTT) — copy config.example.h instead
+room-code/config.h
+
+# 🛠️ build output
+build/
+*.bin
+*.hex
+*.elf
+
+# 🍎 macOS
+.DS_Store
