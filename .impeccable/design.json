@@ -1,0 +1,489 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-02T19:41:54+00:00",
+  "title": "Design System: Layout Effects",
+  "extensions": {
+    "colorMeta": {
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "oklch(19.1% 0.000 90)",
+        "cssVar": "--ink",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#a5a5a5",
+          "#c9c9c9",
+          "#eeeeee"
+        ]
+      },
+      "mute": {
+        "role": "neutral",
+        "displayName": "Graphite",
+        "canonical": "oklch(47.0% 0.005 107)",
+        "cssVar": "--mute",
+        "tonalRamp": [
+          "#0b0b09",
+          "#252523",
+          "#42423f",
+          "#61615e",
+          "#82827f",
+          "#a5a5a2",
+          "#c9c9c6",
+          "#efefeb"
+        ]
+      },
+      "faint": {
+        "role": "neutral",
+        "displayName": "Pencil",
+        "canonical": "oklch(64.6% 0.009 99)",
+        "cssVar": "--faint",
+        "tonalRamp": [
+          "#0c0b07",
+          "#262520",
+          "#43423d",
+          "#62615c",
+          "#83827d",
+          "#a6a59f",
+          "#cac9c3",
+          "#f0efe8"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "oklch(90.9% 0.007 97)",
+        "cssVar": "--rule",
+        "tonalRamp": [
+          "#0c0b08",
+          "#262521",
+          "#43423e",
+          "#62615d",
+          "#83827e",
+          "#a6a5a0",
+          "#cac9c4",
+          "#f0efe9"
+        ]
+      },
+      "edge": {
+        "role": "neutral",
+        "displayName": "Edge",
+        "canonical": "oklch(85.1% 0.008 99)",
+        "cssVar": "--edge",
+        "tonalRamp": [
+          "#0c0b07",
+          "#262521",
+          "#43423d",
+          "#62615c",
+          "#83827d",
+          "#a6a59f",
+          "#cac9c3",
+          "#f0efe8"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "canonical": "oklch(100.0% 0.000 90)",
+        "cssVar": "--paper",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#a5a5a5",
+          "#c9c9c9",
+          "#eeeeee"
+        ]
+      },
+      "shade": {
+        "role": "neutral",
+        "displayName": "Bench Grey",
+        "canonical": "oklch(97.0% 0.005 95)",
+        "cssVar": "--shade",
+        "tonalRamp": [
+          "#0c0b09",
+          "#262522",
+          "#43423f",
+          "#62615e",
+          "#83827f",
+          "#a6a5a1",
+          "#cac9c5",
+          "#efeeea"
+        ]
+      },
+      "kit-yellow": {
+        "role": "primary",
+        "displayName": "Kit-Box Yellow",
+        "canonical": "oklch(81.1% 0.166 85)",
+        "cssVar": "--yellow",
+        "tonalRamp": [
+          "#130900",
+          "#352100",
+          "#5b3b00",
+          "#845800",
+          "#af7700",
+          "#cb9e30",
+          "#e7c47b",
+          "#ffecba"
+        ]
+      },
+      "kit-yellow-soft": {
+        "role": "primary",
+        "displayName": "Lit Yellow",
+        "canonical": "oklch(96.3% 0.048 94)",
+        "cssVar": "--yellow-soft",
+        "tonalRamp": [
+          "#0d0b06",
+          "#282519",
+          "#474230",
+          "#686148",
+          "#8b8262",
+          "#ada58a",
+          "#cfc9b4",
+          "#f3efe0"
+        ]
+      },
+      "pin-blue": {
+        "role": "secondary",
+        "displayName": "Pin Blue",
+        "canonical": "oklch(48.5% 0.131 259)",
+        "cssVar": "--blue",
+        "tonalRamp": [
+          "#040b19",
+          "#132541",
+          "#26426e",
+          "#3a619e",
+          "#5182cf",
+          "#7da6e7",
+          "#aacbfe",
+          "#d9f0ff"
+        ]
+      },
+      "pin-blue-soft": {
+        "role": "secondary",
+        "displayName": "Selection Wash",
+        "canonical": "oklch(94.4% 0.017 259)",
+        "cssVar": "--blue-soft",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#232529",
+          "#3f4248",
+          "#5d6269",
+          "#7d838c",
+          "#a0a5ae",
+          "#c5c9d0",
+          "#eceff3"
+        ]
+      },
+      "ok": {
+        "role": "tertiary",
+        "displayName": "Pass Green",
+        "canonical": "oklch(51.3% 0.118 154)",
+        "cssVar": "--ok",
+        "tonalRamp": [
+          "#020f06",
+          "#0d2c19",
+          "#1c4d2f",
+          "#2d7147",
+          "#419661",
+          "#75b78a",
+          "#a6d7b4",
+          "#d6f9e0"
+        ]
+      },
+      "ok-soft": {
+        "role": "tertiary",
+        "displayName": "Pass Wash",
+        "canonical": "oklch(94.9% 0.017 159)",
+        "cssVar": "--ok-soft",
+        "tonalRamp": [
+          "#0a0c0a",
+          "#222624",
+          "#3d4440",
+          "#5b645e",
+          "#7a867f",
+          "#9ea8a2",
+          "#c4cbc7",
+          "#ebf0ed"
+        ]
+      },
+      "bad": {
+        "role": "tertiary",
+        "displayName": "Fault Red",
+        "canonical": "oklch(52.2% 0.172 28)",
+        "cssVar": "--bad",
+        "tonalRamp": [
+          "#1a0403",
+          "#43120e",
+          "#71251f",
+          "#a23930",
+          "#d55044",
+          "#ef8174",
+          "#ffafa3",
+          "#ffddd4"
+        ]
+      },
+      "bad-soft": {
+        "role": "tertiary",
+        "displayName": "Fault Wash",
+        "canonical": "oklch(94.8% 0.020 25)",
+        "cssVar": "--bad-soft",
+        "tonalRamp": [
+          "#0d0a0a",
+          "#292323",
+          "#48403f",
+          "#6a5e5c",
+          "#8e7e7c",
+          "#afa1a0",
+          "#d1c6c5",
+          "#f4ecec"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Sheet Title",
+        "purpose": "One per step; 32px under 640px."
+      },
+      "headline": {
+        "displayName": "Section Head",
+        "purpose": "Sheet sections and the Your Nano head (28px)."
+      },
+      "title": {
+        "displayName": "Step Title",
+        "purpose": "Wiring step titles, catalog names, column sub-heads (19-21px)."
+      },
+      "body": {
+        "displayName": "Instruction",
+        "purpose": "All explanatory text; max 62ch."
+      },
+      "lede": {
+        "displayName": "Lede",
+        "purpose": "One-line effort summary under the title."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Notes, help, part names, meter captions (13-15px)."
+      },
+      "key": {
+        "displayName": "Key Letter",
+        "purpose": "Lettered part badges."
+      },
+      "pin": {
+        "displayName": "Pin Name",
+        "purpose": "Pin names in blue."
+      },
+      "button": {
+        "displayName": "Button",
+        "purpose": "Button labels; 17px on small buttons."
+      },
+      "code": {
+        "displayName": "Code",
+        "purpose": "Sketches and commands only."
+      }
+    },
+    "shadows": [],
+    "borders": [
+      {
+        "name": "rule-structural",
+        "value": "2px solid #141414",
+        "purpose": "Top bar, column divider, step footer, effect separators, legend."
+      },
+      {
+        "name": "rule-frame",
+        "value": "3px solid #141414",
+        "purpose": "Parts tree frame."
+      },
+      {
+        "name": "rule-panel",
+        "value": "1.5px solid #141414",
+        "purpose": "Buttons, notices, tips, status."
+      },
+      {
+        "name": "hairline",
+        "value": "1px solid #e2e1dc",
+        "purpose": "Rows in wiring steps, catalog, checklists, meters."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-fill",
+        "value": "160ms cubic-bezier(.2, .7, .2, 1)",
+        "purpose": "Step number fill on Done."
+      },
+      {
+        "name": "lit",
+        "value": "120ms ease-out",
+        "purpose": "Part lit wash."
+      },
+      {
+        "name": "progress",
+        "value": "120ms linear",
+        "purpose": "Install progress bar width."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "none",
+        "purpose": "All transitions off under prefers-reduced-motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "stack",
+        "value": "1080px",
+        "purpose": "Your Nano moves below the sheet; parts legend appears above the wiring steps; step tabs take a full row."
+      },
+      {
+        "name": "narrow",
+        "value": "640px",
+        "purpose": "16px gutters, current-only tab labels, Done below path, 2-column parts tree, wrapped footer."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Button",
+      "kind": "button",
+      "refersTo": "button",
+      "description": "Plain ink-bordered action (Back, Copy commands).",
+      "html": "<button class=\"ds-btn\">Back</button>",
+      "css": ".ds-btn{min-height:48px;padding:0 22px;border-radius:6px;font:600 19px/1 var(--font-head, 'Barlow Semi Condensed', 'Arial Narrow', sans-serif);border:1.5px solid var(--ink,#141414);background:var(--paper,#fff);color:var(--ink,#141414);cursor:pointer}.ds-btn:hover{background:var(--shade,#f6f5f1)}.ds-btn:focus-visible{outline:2px solid var(--blue,#2d5da8);outline-offset:2px}.ds-btn:disabled{color:var(--faint,#8f8e88);border-color:var(--edge,#cfcec8);cursor:not-allowed}"
+    },
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one kit-yellow action on a sheet.",
+      "html": "<button class=\"ds-btn-primary\">Next: When it runs</button>",
+      "css": ".ds-btn-primary{min-height:48px;padding:0 26px;border-radius:6px;font:600 19px/1 var(--font-head, 'Barlow Semi Condensed', 'Arial Narrow', sans-serif);border:2px solid var(--ink,#141414);background:var(--yellow,#f2b705);color:var(--ink,#141414);cursor:pointer}.ds-btn-primary:hover{background:#f6c52e}.ds-btn-primary:focus-visible{outline:2px solid var(--blue,#2d5da8);outline-offset:2px}"
+    },
+    {
+      "name": "Lettered Key Badge",
+      "kind": "chip",
+      "refersTo": "key-badge",
+      "description": "Inline letter linking a part across tree, steps and pins.",
+      "html": "<span class=\"ds-txt\">Nano <span class=\"ds-pin\">D9</span> &rarr; <i class=\"ds-k\">D</i> 220 &Omega; resistor &rarr; <i class=\"ds-k\">A</i> long leg</span>",
+      "css": ".ds-txt{font:16px/1.9 var(--font-body,'Atkinson Hyperlegible',system-ui,sans-serif);color:var(--ink,#141414)}.ds-k{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 4px;margin:0 2px;background:var(--ink,#141414);color:#fff;border-radius:3px;font:600 14px/1 var(--font-head,'Barlow Semi Condensed',sans-serif);font-style:normal;vertical-align:1px}.ds-pin{font:600 17px/1 var(--font-head,'Barlow Semi Condensed',sans-serif);color:var(--blue,#2d5da8)}"
+    },
+    {
+      "name": "Step Number",
+      "kind": "custom",
+      "refersTo": "step-number",
+      "description": "Circled step number; fills ink when Done, dashed when optional.",
+      "html": "<span class=\"ds-n\">1</span> <span class=\"ds-n is-done\">2</span> <span class=\"ds-n is-opt\">3</span>",
+      "css": ".ds-n{display:inline-grid;place-items:center;width:38px;height:38px;border:2px solid var(--ink,#141414);border-radius:50%;font:600 20px/1 var(--font-head,'Barlow Semi Condensed',sans-serif);background:var(--paper,#fff);color:var(--ink,#141414);margin-right:8px;transition:background-color 160ms cubic-bezier(.2,.7,.2,1),color 160ms cubic-bezier(.2,.7,.2,1)}.ds-n.is-done{background:var(--ink,#141414);color:#fff}.ds-n.is-opt{border-style:dashed}"
+    },
+    {
+      "name": "Done Toggle",
+      "kind": "input",
+      "refersTo": "done-toggle",
+      "description": "Per-step completion checkbox; blue when checked.",
+      "html": "<label class=\"ds-done\"><input type=\"checkbox\" checked> Done</label>",
+      "css": ".ds-done{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border:1px solid var(--blue,#2d5da8);color:var(--blue,#2d5da8);border-radius:6px;font:15px var(--font-body,'Atkinson Hyperlegible',sans-serif);cursor:pointer}.ds-done input{width:20px;height:20px;margin:0;accent-color:var(--blue,#2d5da8)}.ds-done:focus-within{outline:2px solid var(--blue,#2d5da8);outline-offset:2px}"
+    },
+    {
+      "name": "Choice",
+      "kind": "input",
+      "refersTo": "choice",
+      "description": "Radio row with plain-words explanation; blue when selected.",
+      "html": "<label class=\"ds-choice\"><input type=\"radio\" name=\"ds-c\" checked><b>While triggered</b><small>Runs while a DEJA.js pin, relay or sensor holds it on.</small></label><label class=\"ds-choice\"><input type=\"radio\" name=\"ds-c\"><b>At power-up</b><small>Runs whenever the Nano has power.</small></label>",
+      "css": ".ds-choice{display:grid;grid-template-columns:22px minmax(0,1fr);gap:2px 12px;padding:12px 14px;margin-bottom:8px;border:1px solid var(--edge,#cfcec8);border-radius:6px;cursor:pointer;font:16px/1.5 var(--font-body,'Atkinson Hyperlegible',sans-serif);color:var(--ink,#141414)}.ds-choice input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--blue,#2d5da8)}.ds-choice small{grid-column:2;color:var(--mute,#5b5b58);font-size:14px}.ds-choice:has(input:checked){border-color:var(--blue,#2d5da8);background:var(--blue-soft,#e6edf8)}.ds-choice:focus-within{outline:2px solid var(--blue,#2d5da8);outline-offset:2px}"
+    },
+    {
+      "name": "Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Select or number field.",
+      "html": "<label class=\"ds-field\">Keep running after release (s)<input type=\"number\" value=\"5\"></label>",
+      "css": ".ds-field{display:grid;gap:4px;font:15px var(--font-body,'Atkinson Hyperlegible',sans-serif);color:var(--ink,#141414)}.ds-field input{font:16px var(--font-body,'Atkinson Hyperlegible',sans-serif);border:1px solid #a9a8a1;border-radius:6px;padding:7px 10px;min-height:42px;background:var(--paper,#fff);font-variant-numeric:tabular-nums}.ds-field input:focus-visible{outline:2px solid var(--blue,#2d5da8);outline-offset:2px}"
+    },
+    {
+      "name": "Notice",
+      "kind": "card",
+      "refersTo": "notice",
+      "description": "Ink-bordered note with an inline Barlow lead word; red variant for blocking problems.",
+      "html": "<p class=\"ds-notice\"><b>Tip</b><span>Aim the LEDs at a wall so the flicker washes the room.</span></p><p class=\"ds-notice is-bad\"><b>Not yet</b><span>This set can't be installed from the browser.</span></p>",
+      "css": ".ds-notice{display:flex;gap:12px;align-items:baseline;padding:12px 16px;margin:8px 0;border:1.5px solid var(--ink,#141414);border-radius:6px;max-width:72ch;font:16px/1.5 var(--font-body,'Atkinson Hyperlegible',sans-serif)}.ds-notice b{font:600 18px/1 var(--font-head,'Barlow Semi Condensed',sans-serif);white-space:nowrap}.ds-notice.is-bad{border-color:var(--bad,#b8322a);background:var(--bad-soft,#fbe9e7)}"
+    },
+    {
+      "name": "Parts Tree (sprue)",
+      "kind": "custom",
+      "refersTo": "parts-tree",
+      "description": "Ink-framed grid of lettered line-art parts hung from a sprue runner.",
+      "html": "<div class=\"ds-tree\"><div class=\"ds-part\"><i class=\"ds-k\">A</i><svg width=\"72\" height=\"28\" viewBox=\"0 0 72 28\"><rect x=\"8\" y=\"7\" width=\"18\" height=\"14\" rx=\"7\" fill=\"#fff\" stroke=\"#141414\" stroke-width=\"1.5\"/><path d=\"M26 11h36M26 17h30\" stroke=\"#141414\" stroke-width=\"1.5\"/></svg><p><span>White LED, 3 mm</span><b>&times;1</b></p></div><div class=\"ds-part is-lit\"><i class=\"ds-k\">D</i><svg width=\"72\" height=\"28\" viewBox=\"0 0 72 28\"><path d=\"M4 14h16M52 14h16\" stroke=\"#141414\" stroke-width=\"1.5\"/><rect x=\"20\" y=\"8\" width=\"32\" height=\"12\" rx=\"5\" fill=\"#efe3c8\" stroke=\"#141414\" stroke-width=\"1.5\"/><path d=\"M27 8v12M32 8v12M37 8v12\" stroke=\"#b8322a\" stroke-width=\"2\"/><path d=\"M45 8v12\" stroke=\"#b0892a\" stroke-width=\"2\"/></svg><p><span>220 &Omega; resistor</span><b>&times;2</b></p></div><div class=\"ds-part\"><i class=\"ds-k\">F</i><svg width=\"72\" height=\"28\" viewBox=\"0 0 72 28\"><path d=\"M6 22c10-12 18 6 30-4s18-8 28-14\" stroke=\"#141414\" stroke-width=\"2.5\" fill=\"none\"/></svg><p><span>Hookup wire</span><b></b></p></div></div>",
+      "css": ".ds-tree{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:14px;row-gap:22px;padding:20px 14px 12px;border:3px solid var(--ink,#141414);border-radius:8px;font:13px/1.3 var(--font-body,'Atkinson Hyperlegible',sans-serif)}.ds-part{position:relative;display:flex;flex-direction:column;align-items:center;padding:10px 6px 4px;border-radius:3px;background:var(--paper,#fff);transition:background-color 120ms ease-out}.ds-part::before{content:'';position:absolute;left:-8px;right:-8px;top:-11px;height:2px;background:var(--ink,#141414)}.ds-part::after{content:'';position:absolute;left:calc(50% - 1px);top:-11px;width:2px;height:14px;background:var(--ink,#141414)}.ds-part:hover,.ds-part.is-lit{background:var(--yellow-soft,#fdf3cf)}.ds-part .ds-k{position:absolute;top:6px;left:6px;display:inline-grid;place-items:center;min-width:22px;height:22px;background:var(--ink,#141414);color:#fff;border-radius:3px;font:600 14px/1 var(--font-head,'Barlow Semi Condensed',sans-serif);font-style:normal}.ds-part svg{margin:18px 0 4px}.ds-part p{margin:0;width:100%;display:flex;justify-content:space-between;gap:6px}"
+    },
+    {
+      "name": "Budget Meter",
+      "kind": "custom",
+      "description": "Pin and flash budget with a blue bar; red when over.",
+      "html": "<div class=\"ds-meters\"><div>PWM pins<b>3 of 6</b><i style=\"--v:50%\"></i></div><div class=\"is-over\">Flash<b>31.2 of 30 KB</b><i style=\"--v:100%\"></i></div></div>",
+      "css": ".ds-meters{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:14px 0;border-top:1px solid var(--rule,#e2e1dc);border-bottom:1px solid var(--rule,#e2e1dc);font:14px/1.3 var(--font-body,'Atkinson Hyperlegible',sans-serif)}.ds-meters b{display:block;font:600 18px/1.2 var(--font-head,'Barlow Semi Condensed',sans-serif);font-variant-numeric:tabular-nums}.ds-meters i{display:block;height:6px;margin-top:6px;border-radius:3px;background:linear-gradient(90deg,var(--blue,#2d5da8) var(--v),var(--rule,#e2e1dc) var(--v))}.ds-meters .is-over b{color:var(--bad,#b8322a)}.ds-meters .is-over i{background:var(--bad,#b8322a)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Kit Instruction Sheet",
+    "overview": "The configurator is printed matter from a craftsman kit box: a white sheet ruled in ink, a lettered parts tree drawn in line art, and numbered steps that call each part by its letter and each pin by its place on the real Nano. Every screen is a sheet you work down, not a dashboard you configure. Structure comes from 2px ink rules and hairlines, never from cards, fills or shadows.\n\nDensity is generous but practical: one current step on the left as a sheet, the board itself (\"Your Nano\") on the right behind a heavy ink rule. Color is scarce and every hue has a job. Kit-box yellow says \"you are here\" and \"do this next\"; blue says \"pin\" and \"selected\"; green and red speak only about status. Everything else is ink on paper.\n\nThe letters are the system's spine. The same black lettered key appears in the parts tree, in the wiring steps and beside pins in the use list, and hovering or focusing a step lights its parts and pins together. New surfaces should extend that linkage rather than invent parallel labeling.",
+    "keyCharacteristics": [
+      "White sheet, ink (#141414) rules at 2px for structure, warm hairlines for rows.",
+      "Lettered black key badges that link parts, steps and pins.",
+      "Circled step numbers that fill ink when done; dashed when optional.",
+      "Line-art parts on a sprue runner; the Nano drawn in its real pin layout.",
+      "Condensed industrial headings over a highly legible body face.",
+      "Flat: no shadows anywhere."
+    ],
+    "rules": [
+      {
+        "name": "The Yellow Means Here Rule",
+        "body": "Full-strength yellow appears on at most one action per sheet plus the current step mark. If a second yellow button shows up, one of them is not primary.",
+        "section": "colors"
+      },
+      {
+        "name": "The Status Is Not Decoration Rule",
+        "body": "Green and red appear only when they report a check result. Never use them for accents, categories or illustration.",
+        "section": "colors"
+      },
+      {
+        "name": "The Blue Is a Pin Rule",
+        "body": "Blue marks pins, selection, links and focus. It is never a fill for a panel or a heading.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Voices Rule",
+        "body": "Barlow names things (titles, letters, pins, numbers, actions); Atkinson explains them. Never set a sentence of instruction in Barlow.",
+        "section": "typography"
+      },
+      {
+        "name": "The Monospace Is Code Rule",
+        "body": "Monospace appears only inside code blocks. Pin names are Barlow in blue, not monospace.",
+        "section": "typography"
+      },
+      {
+        "name": "The Ruled Sheet Rule",
+        "body": "Separate with lines, not lifts. If something needs more emphasis, give it a heavier ink border, not a shadow or a filled card.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** refer to every physical part by its lettered key, wherever it appears.",
+      "**Do** separate content with 2px ink rules and 1px hairlines instead of cards.",
+      "**Do** keep exactly one yellow primary action per sheet; demote Next when a step has its own primary (Install).",
+      "**Do** set pin names in blue Barlow and draw the Nano in its real layout.",
+      "**Do** cap reading text at 62ch and notices at 72ch.",
+      "**Do** keep touch targets at 44px or more (Done toggles, small buttons, link buttons).",
+      "**Do** honor reduced motion: the only transitions are short color and width changes, and they switch off."
+    ],
+    "donts": [
+      "**Don't** use shadows or elevated cards; this sheet is flat.",
+      "**Don't** use green or red for anything but check results.",
+      "**Don't** put yellow on a second button, a heading or a panel fill.",
+      "**Don't** set instructions in the condensed heading face or pin names in monospace.",
+      "**Don't** show part or pin choices as a dashboard of bare dropdowns; put them inline in the numbered steps."
+    ]
+  }
+}
