@@ -4,57 +4,36 @@ Where this collection is headed. Each phase ships as its own PR(s), and
 nothing in a later phase starts until the earlier one works on real
 hardware.
 
-## ✅ Today
+## ✅ Phase 1: effect modules + six new effects (built)
 
-Six standalone Nano sketches (welder, campfire, TV glow, lightning, grade
-crossing, traffic light). Each runs from power-up, and each has an optional
-D12 trigger input. Together they'd use about 10 KB of flash, about a third
-of a Nano.
+Every effect is now a module in `src/` with the same tiny interface
+(`begin()`, `update(now, on)`), plus a ready-to-flash example. The six
+original sketches were ported with identical output (checked against the
+old sketches over 30 simulated minutes each).
 
-| Effect | Flash | RAM |
-|---|---|---|
-| 🔥 Welder | 4.1 KB | 65 B |
-| 🔥 Campfire | 2.6 KB | 72 B |
-| 📺 TV glow | 3.0 KB | 63 B |
-| ⛈️ Lightning | 3.0 KB | 40 B |
-| 🚦 Crossing | 2.2 KB | 62 B |
-| 🚥 Traffic light | 1.3 KB | 52 B |
+- **Start modes, shared by every effect** (`MRA_Trigger.h`): power-up,
+  while triggered (with optional run-on), toggle; active-high or active-low.
+- **Six new effects:** 🪧 neon sign, 💡 fluorescent startup, 🚨 rotating
+  beacon, 🚧 servo crossing gates, 🔔 DFPlayer sound, 🌅 day-night lighting.
+- **Multi-effect sketch:** a `config.h` that switches effects on, gives each
+  its pins and trigger, links them (thunder after lightning, bell with the
+  gates, neon at dusk) and checks the pin plan at startup.
 
-## 1️⃣ Effect modules + six new effects
+**Still to do:** flash each new effect to real hardware and tune it by eye.
+Until then they're marked 🧪 in the README.
 
-Turn every effect into a self-contained module with the same tiny interface
-(`begin()`, `update(now, on)`), so each one works both as a standalone
-sketch **and** inside a multi-effect sketch.
+| Effect | Flash | RAM | | Effect | Flash | RAM |
+|---|---|---|---|---|---|---|
+| 🔥 Welder | 5.3 KB | 160 B | | 🪧 Neon | 4.9 KB | 155 B |
+| 🔥 Campfire | 3.6 KB | 130 B | | 💡 Fluorescent | 3.6 KB | 124 B |
+| 📺 TV glow | 4.2 KB | 119 B | | 🚨 Beacon | 4.6 KB | 71 B |
+| ⛈️ Lightning | 4.4 KB | 126 B | | 🚧 Crossing gates | 7.8 KB | 221 B |
+| 🚦 Crossing | 2.9 KB | 122 B | | 🔔 Sound | 5.3 KB | 217 B |
+| 🚥 Traffic light | 2.3 KB | 71 B | | 🌅 Day-night | 4.4 KB | 113 B |
 
-- **Start modes, shared by every effect:**
-  - **Power-up:** runs on its own, no wiring
-  - **While triggered:** runs while a pin is asserted, plus an optional run-on
-    time. Use it for a DEJA.js IO pin, a relay or toggle switch, or an IR/PIR
-    sensor.
-  - **Toggle:** a momentary button press starts it, the next press stops it
-- **Six new effects:**
-  - 🪧 **Neon sign:** buzzing strike-up, spell-out / flash patterns, an
-    optional sputtering "broken" letter
-  - 💡 **Fluorescent startup:** staggered tubes that blink, glow and strike,
-    plus an optional bad tube
-  - 🚨 **Rotating beacon:** amber rotator, airport (white/green) or tower
-    obstruction light, with spin-up and spin-down
-  - 🚧 **Servo crossing gates:** flashers, a delay, eased lowering with a
-    bounce, raise, and a bell output
-  - 🔔 **Sound via DFPlayer Mini:** loop a crossing bell while triggered, or
-    play thunder after each lightning strike with a distance delay
-  - 🌅 **Day-night room lighting:** dawn, day, dusk and night fades on LED
-    strips (through MOSFETs), with a "night" output that can switch other
-    effects on at dusk
-- **Pick-your-effects sketch:** a `config.h` where you switch effects on and
-  give each its own pins and trigger. Only the chosen effects are compiled
-  in.
-- **Effects that chain together:** lightning's thunder pulse → sound,
-  crossing gates' bell pin → sound, day-night's night output → neon sign.
-
-**Known limits:** the Nano has 6 PWM pins (D3, D5, D6, D9, D10, D11) and the
-Servo library takes PWM away from D9/D10. Multi-effect builds need a pin
-plan; the configurator (below) will check it for you.
+(Standalone examples; Arduino core included. Settings live in RAM now, which
+costs about 1 KB of flash per effect versus the old constants, and is what
+lets a web page change them later.)
 
 ## 2️⃣ Web configurator and installer
 
@@ -73,9 +52,13 @@ Both come from the same choices on the same page. The page also checks the
 pin plan (PWM pins, Servo timer conflicts, pins used twice) before you
 install.
 
-**To prove first:** that all effects fit in one firmware alongside the
-settings code (estimated 22–26 KB of the 30 KB), and the bootloader choice
-for older Nanos and clones (Nano vs. "old bootloader" baud rates).
+**Measured in Phase 1:** all twelve effects in one sketch take 29.9 KB of
+the Nano's 30 KB (97%) and 79% of RAM, before any settings code. So one
+universal firmware with everything won't fit as-is. Options to weigh:
+several prebuilt firmwares (e.g. "lights", "crossing + sound", "scenery"),
+building the firmware on demand in the cloud, or slimming the effects
+(dropping float math). Also to settle: the bootloader choice for older
+Nanos and clones (Nano vs. "old bootloader" baud rates).
 
 ## 3️⃣ Share it
 
