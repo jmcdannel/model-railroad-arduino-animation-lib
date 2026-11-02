@@ -20,9 +20,10 @@ is building a railroad for fun.
    ```sh
    git config core.hooksPath .githooks
    ```
-3. Check that everything compiles:
+3. Check that everything compiles (from the repo root):
    ```sh
-   arduino-cli compile --fqbn arduino:avr:nano welder
+   arduino-cli lib install Servo     # for the crossing gates
+   arduino-cli compile --fqbn arduino:avr:nano --library . examples/welder
    ```
 
 ## 🔐 Secrets: the one hard rule
@@ -45,32 +46,57 @@ keeps everything, and this repo is public.
 
 ## 🚂 Adding an effect
 
-Each effect is one folder with one sketch, and anyone should be able to
-flash it without reading anything else.
+An effect is a **module** in `src/` plus a ready-to-flash **example**:
 
 ```
-my-effect/
-  my-effect.ino   ← folder and sketch names must match (Arduino requires it)
-  README.md       ← what it looks like, wiring table, tuning, trigger behavior
+src/MRA_MyEffect.h            ← the effect: a class in namespace mra
+examples/my-effect/
+  my-effect.ino               ← folder and sketch names must match (Arduino requires it)
+  README.md                   ← what it looks like, wiring table, start mode, tuning
 ```
 
-Conventions, so every effect feels the same:
+The module's shape, so every effect works alone and alongside others:
 
-- **Runs from power-up** with no buttons and no libraries if at all
-  possible. If you need a library (Servo, a sound module…), say so at the
-  top of the README with the exact `arduino-cli lib install` command.
-- **Tuning constants at the top** of the sketch, grouped and commented, with
-  the pins first.
-- **Non-blocking timing:** `millis()` state machines, no `delay()` in
-  `loop()`, so it can share a Nano with other effects later.
-- **Optional trigger input on D12**, off by default, following the existing
-  sketches (`USE_TRIGGER`, `TRIGGER_ACTIVE_LOW`, `INPUT_PULLUP`, debounced).
-  Say what "trigger off" does in the README.
+```cpp
+class MyEffect {
+ public:
+  struct Config { uint16_t stepMs = 500; /* … tuning, with defaults */ } cfg;
+  MyEffect(uint8_t pinA = 9, uint8_t pinB = NO_PIN);  // pins in, NO_PIN for optional ones
+  void begin();                         // pinMode, initial state; reads cfg
+  void update(uint32_t now, bool on);   // call every loop(); never blocks
+};
+```
+
+Conventions:
+
+- **Never block:** `millis()` state machines, no `delay()`, so it can share
+  a Nano with other effects. Throttle with a tick (`if (now - lastTick_ <
+  TICK_MS) return;`) when you don't need every millisecond.
+- **`on` means running.** Decide what *off* looks like (fade out, finish
+  the current cycle, coast down…), document it in the header comment, and
+  restart cleanly when `on` comes back.
+- **Tuning goes in `Config`**, grouped and commented, with sensible
+  defaults. Examples expose the useful ones in a `tune()` block at the top.
+- **Start modes come free:** the example uses `Trigger` (POWER_UP,
+  WHILE_TRIGGERED, TOGGLE). Don't read the trigger pin in the module.
+- **Mind 16-bit `int`:** on the Nano `int` is 16 bits, so use `long` /
+  `uint32_t` for anything that can pass 32,767 (times, products).
+- **Libraries:** none if at all possible. If you need one, include it only
+  from your effect's header (not `ModelRailroadAnimation.h`), say so at the
+  top of the README with the install command, and add it to
+  `library.properties` `depends=` and the CI install step.
 - **README wiring table:** pin → resistor → part, plus a tip on placing the
-  LEDs so the effect reads well on a layout.
-- **Add a row** to the effects table in the top-level README.
-- **Keep it small:** a Nano has 30 KB of flash and 2 KB of RAM, and effects
-  will be combined on one board. CI reports sizes on every PR.
+  LEDs so the effect reads well on a layout. Add a row to the effects table
+  in the top-level README and an entry in `examples/multi-effect/`.
+- **Keep it small:** a Nano has 30 KB of flash and 2 KB of RAM, and all
+  twelve current effects together already use 97% of the flash. CI reports
+  sizes on every PR.
+
+Compile from the repo root without installing anything:
+
+```sh
+arduino-cli compile --fqbn arduino:avr:nano --library . examples/my-effect
+```
 
 ## 🙏 Borrowed code and ideas
 
