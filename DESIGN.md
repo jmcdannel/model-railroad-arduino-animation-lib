@@ -276,7 +276,7 @@ Ink-bordered, square-ish and plain; only one ever wears yellow.
 - **Primary:** Kit-Box Yellow fill, 2px ink border, 26px side padding; hover lightens slightly.
 - **Small:** 44px tall, 17px text, 16px padding (catalog Add/Remove, Copy commands).
 - **Disabled:** Pencil text, Edge border, paper fill, not-allowed cursor.
-- **Link button:** blue underlined text with a 44px hit area (Download sketch, Back to Wire it).
+- **Link button:** blue underlined text with a 44px hit area (Download sketch).
 
 ### Lettered Key Badge (signature)
 A 22px ink tile with a white Barlow capital (A, B, C…), 3px corners, set inline in running text and pinned to the top-left of each part cell. One letter per part per board, continuing across effects.
