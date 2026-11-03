@@ -214,6 +214,28 @@ Ink on paper with two working hues, yellow for place and action, blue for pins a
 - **Paper** (paper): the sheet.
 - **Bench Grey** (shade): code blocks and the plain button's hover.
 
+### Dark mode 🌙
+Follows the system setting (`prefers-color-scheme`). It is the same sheet drawn in light ink on graphite, not a new look. Every role keeps its token, and only the values change:
+
+| Token | Light | Dark |
+|---|---|---|
+| ink | #141414 | #ecebe6 |
+| mute | #5b5b58 | #a9a8a1 |
+| faint | #8f8e88 | #7a7973 |
+| rule | #e2e1dc | #33322e |
+| edge | #cfcec8 | #4a4944 |
+| paper | #ffffff | #1c1c1a |
+| shade | #f6f5f1 | #262623 |
+| yellow-soft | #fdf3cf | #3b3216 |
+| blue / blue-soft | #2d5da8 / #e6edf8 | #8fb1ea / #1f2b40 |
+| ok / ok-soft | #1d7a46 / #e5f2ea | #62c48f / #173020 |
+| bad / bad-soft | #b8322a / #fbe9e7 | #f0796d / #3a1d1a |
+
+- **Yellow** (#f2b705) is the same in both. Text on it is always `--on-yellow` (#141414).
+- Anything filled with ink (key badges, done step numbers) uses paper for its text, so it inverts with the theme.
+- Part drawings are line art in `currentColor`, with the classes `.pf` (paper), `.pi` (ink) and `.pb` (blue-soft). Real part colors stay fixed: LED tints, strip tints, resistor bands, and the resistor body (`--resistor`, so the bands read on dark).
+- Never write a literal color in markup or SVG. Add a token instead.
+
 ### Named Rules
 **The Yellow Means Here Rule.** Full-strength yellow appears on at most one action per sheet plus the current step mark. If a second yellow button shows up, one of them is not primary.
 

@@ -124,7 +124,7 @@ function renderSteps(kit) {
   $('#steps').innerHTML = STEPS.map((s, i) => {
     const done = stepDone(s.id, kit)
     const cur = state.step === s.id
-    const mark = done && !cur ? '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 7.5l2.5 2.5L11 4" stroke="#fff" stroke-width="2" fill="none"/></svg>' : i + 1
+    const mark = done && !cur ? '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 7.5l2.5 2.5L11 4" stroke="currentColor" stroke-width="2" fill="none"/></svg>' : i + 1
     return `<button type="button" class="step-tab${done ? ' is-done' : ''}" data-step="${s.id}" ${cur ? 'aria-current="step"' : ''}><span class="d">${mark}</span><span class="label">${s.label}${done && !cur ? '<span class="visually-hidden"> (done)</span>' : ''}</span></button>`
   }).join('')
   $('#steps').querySelectorAll('.step-tab').forEach((b) => b.addEventListener('click', () => go(b.dataset.step)))
@@ -500,20 +500,20 @@ const BOTTOM = ['D12', 'D11', 'D10', 'D9', 'D8', 'D7', 'D6', 'D5', 'D4', 'D3', '
 const pinNumber = (label) => (/^D(\d+)$/.test(label) ? Number(label.slice(1)) : /^A[0-5]$/.test(label) ? 14 + Number(label[1]) : null)
 
 function partArt(p) {
-  const s = (inner) => `<svg width="76" height="44" viewBox="0 0 76 44" fill="none" stroke="#141414" stroke-width="1.5" aria-hidden="true">${inner}</svg>`
+  const s = (inner) => `<svg width="76" height="44" viewBox="0 0 76 44" class="art" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">${inner}</svg>`
   const BANDS = { 220: ['#c8322b', '#c8322b', '#7b4a26'], 150: ['#7b4a26', '#2e7d4b', '#7b4a26'], 1000: ['#7b4a26', '#141414', '#c8322b'], 470: ['#e2b313', '#7a3fa0', '#7b4a26'] }
   switch (p.kind) {
-    case 'led': return s(`<path d="M6 22a10 10 0 0 1 10-10h12v20H16A10 10 0 0 1 6 22z" fill="${LED_FILL[p.color] || '#fff'}"/><path d="M28 9h4v26h-4z" fill="#fff"/><path d="M32 17h40M32 27h28"/><text x="66" y="12" font-size="11" fill="#141414" stroke="none">+</text>`)
-    case 'res': return s(`<path d="M2 22h16M58 22h16"/><rect x="18" y="14" width="40" height="16" rx="7" fill="#fff"/>${(BANDS[p.ohms] || []).map((c, i) => `<rect x="${24 + i * 7}" y="14" width="3" height="16" fill="${c}" stroke="none"/>`).join('')}<rect x="47" y="14" width="3" height="16" fill="#b8963a" stroke="none"/>`)
-    case 'ir': return s('<rect x="10" y="10" width="44" height="24" rx="2" fill="#e6edf8"/><circle cx="20" cy="22" r="5" fill="#fff"/><circle cx="34" cy="22" r="5" fill="#141414"/><path d="M54 16h16M54 22h16M54 28h16"/>')
-    case 'button': return s('<rect x="24" y="10" width="28" height="24" rx="3" fill="#fff"/><circle cx="38" cy="22" r="7" fill="#141414"/><path d="M24 14h-8M24 30h-8M52 14h8M52 30h8"/>')
-    case 'servo': return s('<rect x="10" y="14" width="40" height="20" rx="2" fill="#e6edf8"/><circle cx="24" cy="14" r="4" fill="#fff"/><path d="M24 14l26-8"/><path d="M50 26h20" stroke-width="3"/>')
-    case 'strip': return s(`<rect x="4" y="16" width="68" height="12" rx="2" fill="${{ day: '#ffffff', warm: '#fbe2a6', night: '#d6e1f3' }[p.color]}"/>${[14, 30, 46, 62].map((x) => `<rect x="${x - 4}" y="19" width="8" height="6" fill="#141414" stroke="none"/>`).join('')}`)
-    case 'mosfet': return s('<rect x="18" y="8" width="40" height="28" rx="2" fill="#fff"/><path d="M28 36v6M38 36v6M48 36v6"/><circle cx="38" cy="18" r="4"/>')
-    case 'supply': return s('<rect x="8" y="10" width="40" height="24" rx="4" fill="#fff"/><path d="M48 22h22"/><text x="15" y="26" font-size="11" fill="#141414" stroke="none">12 V</text>')
-    case 'dfplayer': return s('<rect x="14" y="6" width="48" height="32" rx="2" fill="#e6edf8"/><rect x="24" y="12" width="28" height="14" fill="#fff"/><path d="M18 38v4M26 38v4M34 38v4M42 38v4M50 38v4M58 38v4"/>')
-    case 'speaker': return s('<circle cx="38" cy="22" r="16" fill="#fff"/><circle cx="38" cy="22" r="7" fill="#141414"/>')
-    case 'sd': return s('<path d="M28 8h18l6 6v22H28z" fill="#fff"/><path d="M33 8v6M38 8v6M43 8v6"/>')
+    case 'led': return s(`<path d="M6 22a10 10 0 0 1 10-10h12v20H16A10 10 0 0 1 6 22z" fill="${LED_FILL[p.color] || '#ffffff'}"/><path d="M28 9h4v26h-4z" class="pf"/><path d="M32 17h40M32 27h28"/><text x="66" y="12" font-size="11" fill="currentColor" stroke="none">+</text>`)
+    case 'res': return s(`<path d="M2 22h16M58 22h16"/><rect x="18" y="14" width="40" height="16" rx="7" class="res"/>${(BANDS[p.ohms] || []).map((c, i) => `<rect x="${24 + i * 7}" y="14" width="3" height="16" fill="${c}" stroke="none"/>`).join('')}<rect x="47" y="14" width="3" height="16" fill="#b8963a" stroke="none"/>`)
+    case 'ir': return s('<rect x="10" y="10" width="44" height="24" rx="2" class="pb"/><circle cx="20" cy="22" r="5" class="pf"/><circle cx="34" cy="22" r="5" class="pi"/><path d="M54 16h16M54 22h16M54 28h16"/>')
+    case 'button': return s('<rect x="24" y="10" width="28" height="24" rx="3" class="pf"/><circle cx="38" cy="22" r="7" class="pi"/><path d="M24 14h-8M24 30h-8M52 14h8M52 30h8"/>')
+    case 'servo': return s('<rect x="10" y="14" width="40" height="20" rx="2" class="pb"/><circle cx="24" cy="14" r="4" class="pf"/><path d="M24 14l26-8"/><path d="M50 26h20" stroke-width="3"/>')
+    case 'strip': return s(`<rect x="4" y="16" width="68" height="12" rx="2" fill="${{ day: '#ffffff', warm: '#fbe2a6', night: '#d6e1f3' }[p.color]}"/>${[14, 30, 46, 62].map((x) => `<rect x="${x - 4}" y="19" width="8" height="6" fill="currentColor" stroke="none"/>`).join('')}`)
+    case 'mosfet': return s('<rect x="18" y="8" width="40" height="28" rx="2" class="pf"/><path d="M28 36v6M38 36v6M48 36v6"/><circle cx="38" cy="18" r="4"/>')
+    case 'supply': return s('<rect x="8" y="10" width="40" height="24" rx="4" class="pf"/><path d="M48 22h22"/><text x="15" y="26" font-size="11" fill="currentColor" stroke="none">12 V</text>')
+    case 'dfplayer': return s('<rect x="14" y="6" width="48" height="32" rx="2" class="pb"/><rect x="24" y="12" width="28" height="14" class="pf"/><path d="M18 38v4M26 38v4M34 38v4M42 38v4M50 38v4M58 38v4"/>')
+    case 'speaker': return s('<circle cx="38" cy="22" r="16" class="pf"/><circle cx="38" cy="22" r="7" class="pi"/>')
+    case 'sd': return s('<path d="M28 8h18l6 6v22H28z" class="pf"/><path d="M33 8v6M38 8v6M43 8v6"/>')
     case 'wire': return s('<path d="M12 32C26 6 44 42 62 14" stroke-width="4" stroke-linecap="round"/><path d="M12 32l-6 6M62 14l6-6"/>')
     default: return s('')
   }
@@ -548,10 +548,10 @@ function renderNano(kit) {
     return `<circle class="${cls}" cx="${x}" cy="${y}" r="6.5" data-pin="${n != null ? n : label}"/><text x="${x}" y="${ty}" text-anchor="middle" class="${textCls}">${pwm}${label}</text>`
   }
   const map = `<svg class="nano-map" viewBox="0 0 488 132" role="img" aria-label="Nano pin map. ${uses.length ? `In use: ${esc(uses.map((u) => `${pinName(u.pin)} ${u.role}`).join(', '))}.` : 'No pins in use yet.'}">
-    <rect x="34" y="28" width="440" height="76" rx="5" fill="#fff" stroke="#141414" stroke-width="2"/>
-    <rect x="12" y="48" width="30" height="36" rx="3" fill="#fff" stroke="#141414" stroke-width="2"/>
-    <text x="27" y="70" font-size="9" fill="#141414" transform="rotate(-90 27 70)" text-anchor="middle">USB</text>
-    <rect x="240" y="56" width="28" height="20" rx="2" fill="none" stroke="#141414" stroke-width="1.2"/>
+    <rect class="board" x="34" y="28" width="440" height="76" rx="5" stroke-width="2"/>
+    <rect class="board" x="12" y="48" width="30" height="36" rx="3" stroke-width="2"/>
+    <text class="usb-label" x="27" y="70" font-size="9" transform="rotate(-90 27 70)" text-anchor="middle">USB</text>
+    <rect class="board" x="240" y="56" width="28" height="20" rx="2" stroke-width="1.2"/>
     ${TOP.map((l, i) => hole(l, 58 + i * 28, 42, 18)).join('')}
     ${BOTTOM.map((l, i) => hole(l, 58 + i * 28, 90, 124)).join('')}
   </svg>`
@@ -575,8 +575,8 @@ function renderNano(kit) {
     ${flash ? meter('Flash', flash.kb, 30, `${flash.exact ? '' : 'about '}${flash.kb.toFixed(1)} of 30 KB`) : '<div>Flash<b>—</b><i style="--v:0%"></i></div>'}
   </div>`
   const status = !entries.length ? '' : problems.length
-    ? `<div class="status is-bad"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10.5" fill="none" stroke="#b8322a" stroke-width="2"/><path d="M12 6.5v7M12 16.5v1" stroke="#b8322a" stroke-width="2.4" stroke-linecap="round"/></svg><div><b>${problems.length} pin problem${problems.length > 1 ? 's' : ''}</b><ul>${problems.map((p) => `<li>${esc(p.text)}</li>`).join('')}</ul></div></div>`
-    : `<div class="status"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10.5" fill="none" stroke="#1d7a46" stroke-width="2"/><path d="M7 12.5l3.2 3.2L17 9" stroke="#1d7a46" stroke-width="2.2" fill="none"/></svg><span><b>No problems.</b> Pin plan is good.</span></div>`
+    ? `<div class="status is-bad"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="color: var(--bad)"><circle cx="12" cy="12" r="10.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 6.5v7M12 16.5v1" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg><div><b>${problems.length} pin problem${problems.length > 1 ? 's' : ''}</b><ul>${problems.map((p) => `<li>${esc(p.text)}</li>`).join('')}</ul></div></div>`
+    : `<div class="status"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="color: var(--ok)"><circle cx="12" cy="12" r="10.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 12.5l3.2 3.2L17 9" stroke="currentColor" stroke-width="2.2" fill="none"/></svg><span><b>No problems.</b> Pin plan is good.</span></div>`
   const names = entries.map((e) => byId[e.id].title)
   $('#nano').innerHTML = `
     <div class="ahead"><h2 id="nano-title">Your Nano</h2><span>${names.length ? esc(names.join(', ')) : 'Nothing on it yet'}</span></div>
