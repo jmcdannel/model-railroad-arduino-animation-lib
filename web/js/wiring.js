@@ -152,7 +152,7 @@ export function buildKit(effects) {
   if (counts.size) add('wire')
 
   // 🔤 letters like a kit's parts tree: grouped by kind, then in order of use;
-  // buttons come last: a trigger button added in When it runs never re-letters wired parts
+  // buttons come last: going back to When it runs to add a button never re-letters wired parts
   const KIND_ORDER = ['led', 'strip', 'ir', 'servo', 'dfplayer', 'speaker', 'sd', 'res', 'mosfet', 'supply', 'wire', 'button']
   const skus = [...counts.keys()].sort((a, b) => KIND_ORDER.indexOf(a.split(':')[0]) - KIND_ORDER.indexOf(b.split(':')[0]))
   const letters = new Map(skus.map((sku, i) => [sku, String.fromCharCode(65 + i)]))

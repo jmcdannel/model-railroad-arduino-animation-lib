@@ -1,5 +1,5 @@
 // 🧰 Layout Effects: a kit instruction sheet for an Arduino Nano.
-// Five steps (pick, wire, when it runs, install, test) on the left;
+// Five steps (pick, when it runs, wire, install, test) on the left;
 // "Your Nano" (lettered parts, pin map, budget, problems) on the right.
 import schema from './schema.js'
 import { EFFECTS, byId, PINS, KEY_FIELDS, PIN_CHOICES, PWM_PINS, NO_PIN, pinName } from './effects.js'
@@ -13,8 +13,8 @@ import { supported, WebSerialTransport } from './webserial.js'
 
 const STEPS = [
   { id: 'pick', label: 'Pick effects' },
-  { id: 'wire', label: 'Wire it' },
   { id: 'start', label: 'When it runs' },
+  { id: 'wire', label: 'Wire it' },
   { id: 'install', label: 'Install' },
   { id: 'test', label: 'Test' },
 ]
@@ -104,7 +104,7 @@ function render() {
 function stepDone(id, kit) {
   if (id === 'pick') return state.effects.length > 0
   if (id === 'wire') return kit.parts.length > 0 && wiringKeys(kit).every((k) => state.checks[k])
-  if (id === 'start') return !!state.visited.install && state.effects.length > 0
+  if (id === 'start') return !!state.visited.wire && state.effects.length > 0
   if (id === 'install') return state.installed
   if (id === 'test') return state.effects.length > 0 && testKeys().every((k) => state.checks[k])
   return false
@@ -175,7 +175,7 @@ function pickSheet() {
     <ul class="catalog">${rows}</ul>`
 }
 
-// ----------------------------------------------------------- 2 wire 🔌
+// ----------------------------------------------------------- 3 wire 🔌
 function wiringKeys(kit) {
   const keys = []
   for (const sec of kit.sections) sec.steps.forEach((s, i) => { if (!s.optional) keys.push(`wire:${sec.id}:${i}`) })
@@ -250,7 +250,7 @@ function pinSelect(id, value, optional, label) {
   return `<select class="pin-pick${bad.has(value) ? ' is-bad' : ''}" id="${id}" aria-label="${esc(label)}">${opts}</select>`
 }
 
-// ---------------------------------------------------- 3 when it runs ⏱️
+// ---------------------------------------------------- 2 when it runs ⏱️
 function startSheet() {
   if (!state.effects.length) return emptySheet('When it runs', 'Pick an effect first, then choose here when it should run.')
   const ids = state.effects.map((e) => e.id)
@@ -276,7 +276,7 @@ function startSheet() {
       : ''
     const off = crossing ? '' : `<p class="note">When it’s off: ${esc(fx.offText)}.</p>`
     const adds = e.source === 'trigger' && e.start.mode !== 'POWER_UP'
-      ? `<p class="notice"><b>Wiring</b><span>This adds a step to Wire it: ${e.start.mode === 'TOGGLE' ? `a <b>push button</b> between ${pinName(e.start.pin)} and GND` : e.start.activeLow ? `a button, relay or sensor between ${pinName(e.start.pin)} and GND` : `your DEJA.js pin or switch to ${pinName(e.start.pin)}`}. <button type="button" class="link-btn" data-go="wire">Back to Wire it</button></span></p>`
+      ? `<p class="notice"><b>Wiring</b><span>Wire it, next, includes a step for this: ${e.start.mode === 'TOGGLE' ? `a <b>push button</b> between ${pinName(e.start.pin)} and GND` : e.start.activeLow ? `a button, relay or sensor between ${pinName(e.start.pin)} and GND` : `your DEJA.js pin or switch to ${pinName(e.start.pin)}`}.</span></p>`
       : ''
     return `<section class="effect-block">
       <h2 class="sec">${esc(fx.title)}</h2>
@@ -588,7 +588,6 @@ function flashEstimate() {
 // -------------------------------------------------------------- events 🖱️
 function wireUp(sheet) {
   sheet.querySelectorAll('[data-go]').forEach((b) => b.addEventListener('click', () => {
-    if (state.step === 'start' && b.dataset.go === 'install') state.visited.install = true
     go(b.dataset.go)
   }))
   sheet.querySelectorAll('[data-toggle]').forEach((b) => b.addEventListener('click', () => toggleEffect(b.dataset.toggle)))
