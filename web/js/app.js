@@ -5,7 +5,7 @@ import schema from './schema.js'
 import { EFFECTS, byId, PINS, KEY_FIELDS, PIN_CHOICES, PWM_PINS, NO_PIN, pinName } from './effects.js'
 import { defaultEntry, ordered, availableSources, encodeSettings, buildCommands, generateSketch } from './generate.js'
 import { BUNDLES, bundleFor } from './bundles.js'
-import { pinUses, checkPlan, assignPins, freeTriggerPin } from './pins.js'
+import { pinUses, checkPlan, assignPins, freeTriggerPin, entriesForSet } from './pins.js'
 import { buildKit, partsSummary, TESTS, TROUBLESHOOT, LED_FILL } from './wiring.js'
 import { parseHex, findBlock } from './ihex.js'
 import { Stk500, BAUD } from './stk500.js'
@@ -160,18 +160,31 @@ function emptySheet(title, text) {
 }
 
 // ---------------------------------------------------------- 1 pick 🧺
+const SETS = BUNDLES.filter((b) => b.effects.length > 1)
+
 function pickSheet() {
   const ids = state.effects.map((e) => e.id)
+  const current = bundleFor(ids)
+  const sets = SETS.map((b) => {
+    const on = current?.id === b.id
+    return `<li class="${on ? 'is-on' : ''}">
+      <div><h3>${esc(b.title)}</h3><p>${esc(b.blurb)}</p><p class="needs">${b.effects.map((id) => esc(byId[id].title)).join(' + ')}</p></div>
+      <button type="button" class="btn small" id="set-${b.id}" data-set="${b.id}" aria-pressed="${on}">${on ? 'Remove' : 'Use this set'}</button>
+    </li>`
+  }).join('')
   const rows = EFFECTS.map((fx) => {
     const on = ids.includes(fx.id)
     const replaces = !on && (fx.excludes || []).find((x) => ids.includes(x))
     return `<li class="${on ? 'is-on' : ''}">
-      <div><h2>${esc(fx.title)}</h2><p>${esc(fx.blurb)}</p><p class="needs">Needs: ${esc(partsSummary(fx.id))}${replaces ? `. Replaces the ${esc(byId[replaces].title.toLowerCase())}.` : ''}</p></div>
+      <div><h3>${esc(fx.title)}</h3><p>${esc(fx.blurb)}</p><p class="needs">Needs: ${esc(partsSummary(fx.id))}${replaces ? `. Replaces the ${esc(byId[replaces].title.toLowerCase())}.` : ''}</p></div>
       <button type="button" class="btn small" id="add-${fx.id}" data-toggle="${fx.id}" aria-pressed="${on}">${on ? 'Remove' : 'Add to board'}</button>
     </li>`
   }).join('')
   return `<h1>Pick your effects</h1>
-    <p class="lede"><b>Start with one.</b> Each effect runs on its own Arduino Nano, and several can share one board.</p>
+    <p class="lede"><b>Start from a ready-made set, or pick effects one at a time.</b> One Arduino Nano runs them all.</p>
+    <h2 class="sec">Ready-made sets <small>Already built and linked: install in one click</small></h2>
+    <ul class="catalog sets">${sets}</ul>
+    <h2 class="sec">Single effects <small>Each installs in one click; other mixes you build with the commands we give you</small></h2>
     <ul class="catalog">${rows}</ul>`
 }
 
@@ -591,6 +604,7 @@ function wireUp(sheet) {
     go(b.dataset.go)
   }))
   sheet.querySelectorAll('[data-toggle]').forEach((b) => b.addEventListener('click', () => toggleEffect(b.dataset.toggle)))
+  sheet.querySelectorAll('[data-set]').forEach((b) => b.addEventListener('click', () => useSet(b.dataset.set)))
   sheet.querySelectorAll('[data-check]').forEach((c) => c.addEventListener('change', () => { state.checks[c.dataset.check] = c.checked; changed() }))
   sheet.querySelectorAll('select.pin-pick').forEach((s) => s.addEventListener('change', () => {
     const v = Number(s.value)
@@ -684,6 +698,17 @@ function toggleEffect(id) {
   state.installed = false
   changed()
   announce(`${byId[id].title} ${state.effects.some((e) => e.id === id) ? 'added to' : 'removed from'} your board.`)
+}
+
+function useSet(id) {
+  const set = SETS.find((b) => b.id === id)
+  const was = state.effects.map((e) => e.id)
+  const removing = bundleFor(was)?.id === id
+  state.effects = removing ? [] : entriesForSet(set, state.effects)
+  state.installed = false
+  changed()
+  const dropped = was.filter((x) => !set.effects.includes(x)).map((x) => byId[x].title.toLowerCase())
+  announce(removing ? `${set.title} removed from your board.` : `${set.title} is on your board${dropped.length ? `, replacing the ${dropped.join(' and ')}` : ''}.`)
 }
 
 // ---------------------------------------------------------------- start 🚀

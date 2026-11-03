@@ -96,10 +96,10 @@ li.is-lit { background: linear-gradient(var(--yellow-soft), var(--yellow-soft)) 
 /* pick list */
 ul.catalog { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--rule); }
 ul.catalog li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 20px; align-items: center; padding: 16px 0; border-top: 1px solid var(--rule); }
-ul.catalog h2 { font-size: 21px; }
+ul.catalog h3 { font-size: 21px; }
 ul.catalog p { margin: 2px 0 0; color: var(--mute); max-width: var(--measure); }
 ul.catalog .needs { font-size: 14px; color: var(--ink); }
-ul.catalog li.is-on h2::after { content: 'On this board'; margin-left: 10px; font: 600 13px var(--font-body); color: var(--ok); vertical-align: 2px; }
+ul.catalog li.is-on h3::after { content: 'On this board'; margin-left: 10px; font: 600 13px var(--font-body); color: var(--ok); vertical-align: 2px; }
 
 /* start step */
 fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
