@@ -89,3 +89,29 @@ test('VIN reuses the strips’ 12 V supply, and warns when servos or the DFPlaye
   assert.ok(buildKit([defaultEntry('crossing-gates')], { power: 'vin' }).power.warn)
   assert.ok(!buildKit([defaultEntry('crossing-gates')], { power: '5v' }).power.warn)
 })
+
+test('every ready-made set builds a clean board with its effects linked', async () => {
+  const { BUNDLES } = await import('../web/js/bundles.js')
+  const { entriesForSet, checkPlan } = await import('../web/js/pins.js')
+  const { availableSources } = await import('../web/js/generate.js')
+  for (const set of BUNDLES.filter((b) => b.effects.length > 1)) {
+    assert.ok(set.blurb, `${set.id} has a blurb`)
+    const entries = entriesForSet(set, [])
+    assert.deepEqual(entries.map((e) => e.id).sort(), [...set.effects].sort())
+    assert.deepEqual(checkPlan(entries), [], `${set.id} has no pin problems`)
+    for (const [id, src] of Object.entries(set.links || {})) {
+      assert.ok(availableSources(id, set.effects).some((s) => s.id === src), `${set.id}: ${id} can link to ${src}`)
+      assert.equal(entries.find((e) => e.id === id).source, src)
+    }
+  }
+})
+
+test('switching to a set keeps the settings of effects already on the board', async () => {
+  const { BUNDLES } = await import('../web/js/bundles.js')
+  const { entriesForSet } = await import('../web/js/pins.js')
+  const lightning = defaultEntry('lightning')
+  lightning.cfg.Lightning.minGapMs = 1234
+  const entries = entriesForSet(BUNDLES.find((b) => b.id === 'storm'), [lightning, defaultEntry('welder')])
+  assert.equal(entries.find((e) => e.id === 'lightning'), lightning)
+  assert.ok(!entries.some((e) => e.id === 'welder'), 'effects outside the set are dropped')
+})
