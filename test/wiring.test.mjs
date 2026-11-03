@@ -65,3 +65,27 @@ test('LED steps name the resistor value and send the short leg to the ground wir
   assert.ok(t.includes('220 Ω resistor →'))
   assert.ok(t.some((x) => x.groundWire), 'points at the ground wire and its step')
 })
+
+test('power: USB by default, a lettered supply on 5V or VIN, lettered last', () => {
+  const welder = [defaultEntry('welder')]
+  const usb = buildKit(welder)
+  assert.equal(usb.power.how, 'usb')
+  assert.equal(usb.power.pin, null)
+  const five = buildKit(welder, { power: '5v' })
+  assert.equal(five.power.pin, '5V')
+  assert.equal(five.parts.at(-1).sku, 'psu:5v', 'the supply is lettered last')
+  assert.deepEqual(five.parts.slice(0, -1).map((p) => p.key + p.sku), usb.parts.map((p) => p.key + p.sku), 'other letters stay put')
+  assert.ok(five.power.tokens.some((t) => t.fixed === '5V'))
+  const vin = buildKit(welder, { power: 'vin' })
+  assert.equal(vin.power.pin, 'VIN')
+  assert.equal(vin.parts.at(-1).sku, 'psu:9v')
+  assert.equal(vin.power.warn, null)
+})
+
+test('VIN reuses the strips’ 12 V supply, and warns when servos or the DFPlayer need 5 V', () => {
+  const dn = buildKit([defaultEntry('day-night')], { power: 'vin' })
+  assert.ok(!dn.parts.some((p) => p.sku === 'psu:9v'), 'no second supply')
+  assert.ok(dn.power.parts.includes('supply'))
+  assert.ok(buildKit([defaultEntry('crossing-gates')], { power: 'vin' }).power.warn)
+  assert.ok(!buildKit([defaultEntry('crossing-gates')], { power: '5v' }).power.warn)
+})
