@@ -112,6 +112,13 @@ ol.wire h3 .opt { font: 14px var(--font-body); color: var(--mute); }
 .path select.pin-pick { font: 600 16px/1 var(--font-head); color: var(--blue); border: 1px solid var(--edge); border-radius: 4px; padding: 3px 4px; background: var(--paper); min-height: 32px; vertical-align: 1px; }
 .path select.pin-pick.is-bad { border-color: var(--bad); color: var(--bad); background: var(--bad-soft); }
 .note { margin: 2px 0 0; font-size: 14px; color: var(--mute); max-width: var(--measure); }
+.note.is-bad { color: var(--bad); font-weight: 700; }
+/* 🔋 power source, picked inside the last wiring step */
+.power-pick { display: flex; flex-wrap: wrap; gap: 8px; border: 0; margin: 8px 0 6px; padding: 0; min-width: 0; }
+.power-pick label { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 14px; border: 1px solid var(--edge); border-radius: var(--radius); font-size: 15px; cursor: pointer; }
+.power-pick label:has(input:checked) { border-color: var(--blue); background: var(--blue-soft); }
+.power-pick input { width: 18px; height: 18px; margin: 0; accent-color: var(--blue); }
+@media print { .power-pick { display: none; } }
 .done { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; border: 1px solid var(--edge); border-radius: var(--radius); font-size: 15px; cursor: pointer; white-space: nowrap; }
 .done input { width: 20px; height: 20px; margin: 0; accent-color: var(--blue); }
 li.is-done .n { background: var(--ink); color: var(--paper); }

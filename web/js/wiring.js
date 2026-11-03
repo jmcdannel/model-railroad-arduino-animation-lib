@@ -4,7 +4,7 @@
 // A wiring step is a list of tokens the page renders inline:
 //   'text'                  plain words
 //   { pin: [cls, name] }    a pin the user can change (a select in the step)
-//   { fixed: 'GND' }        a fixed Nano pin: GND, 5V
+//   { fixed: 'GND' }        a fixed Nano pin: GND, 5V, VIN
 //   { part: sku }           a lettered part (the letter is assigned per board)
 import schema from './schema.js'
 import { byId, NO_PIN, PINS } from './effects.js'
@@ -25,7 +25,10 @@ export function partInfo(sku) {
     case 'servo': return { kind, name: 'Micro servo (SG90)' }
     case 'strip': return { kind, name: `${a === 'day' ? 'Daylight-white' : a === 'warm' ? 'Warm-white' : 'Blue'} LED strip, 12 V`, color: a }
     case 'mosfet': return { kind, name: 'Logic-level MOSFET module' }
-    case 'supply': return { kind, name: '12 V power supply for the strips' }
+    case 'supply': return { kind, name: '12 V power supply for the strips', volts: '12 V' }
+    case 'psu': return a === '5v'
+      ? { kind, name: 'Regulated 5 V power supply, 2 A', volts: '5 V' }
+      : { kind, name: '9 V power supply (7–12 V works)', volts: '9 V' }
     case 'dfplayer': return { kind, name: 'DFPlayer Mini MP3 module' }
     case 'speaker': return { kind, name: 'Speaker, 8 Ω, up to 3 W' }
     case 'sd': return { kind, name: 'microSD card with your sounds' }
@@ -76,7 +79,9 @@ const roleLabel = (fx, cls, pinName, spec) => LABELS[cls]?.[pinName] || spec.lab
 // ------------------------------------------------------ the board 🔩
 // Everything the sheet needs for a configuration: lettered parts, wiring
 // steps per effect, and a few extras (5V used, GND used).
-export function buildKit(effects) {
+// opts.power: how the Nano is powered on the layout: 'usb', '5v' or 'vin'
+export const POWER = ['usb', '5v', 'vin']
+export function buildKit(effects, opts = {}) {
   const entries = ordered(effects)
   const counts = new Map()                     // sku → quantity, in order of first use
   const add = (sku, n = 1) => counts.set(sku, (counts.get(sku) || 0) + n)
@@ -150,14 +155,37 @@ export function buildKit(effects) {
     sections.push({ id: e.id, steps })
   }
   if (counts.size) add('wire')
+  const power = powerStep(POWER.includes(opts.power) ? opts.power : 'usb', counts.has('supply'), uses5V, add)
 
   // 🔤 letters like a kit's parts tree: grouped by kind, then in order of use;
-  // buttons come last: going back to When it runs to add a button never re-letters wired parts
-  const KIND_ORDER = ['led', 'strip', 'ir', 'servo', 'dfplayer', 'speaker', 'sd', 'res', 'mosfet', 'supply', 'wire', 'button']
+  // buttons and the Nano's own supply come last: going back to When it runs, or
+  // changing how it's powered, never re-letters parts already wired
+  const KIND_ORDER = ['led', 'strip', 'ir', 'servo', 'dfplayer', 'speaker', 'sd', 'res', 'mosfet', 'supply', 'wire', 'button', 'psu']
   const skus = [...counts.keys()].sort((a, b) => KIND_ORDER.indexOf(a.split(':')[0]) - KIND_ORDER.indexOf(b.split(':')[0]))
   const letters = new Map(skus.map((sku, i) => [sku, String.fromCharCode(65 + i)]))
   const parts = skus.map((sku) => ({ sku, qty: sku === 'wire' ? null : counts.get(sku), key: letters.get(sku), ...partInfo(sku) }))
-  return { parts, letters, sections, uses5V }
+  return { parts, letters, sections, uses5V, power }
+}
+
+// 🔋 the last wiring step: power the Nano from USB, the 5V pin or VIN
+function powerStep(how, hasStripSupply, uses5V, add) {
+  const install = 'Install over USB first'
+  if (how === '5v') {
+    add('psu:5v')
+    return { how, pin: '5V', title: 'Power from the 5V pin', parts: ['psu:5v'],
+      tokens: [{ part: 'psu:5v' }, '+ →', { fixed: '5V' }, '; − →', { fixed: 'GND' }],
+      note: `It must be a regulated 5 V supply: this pin skips the Nano’s regulator. ${install}, and unplug this supply while USB is connected.` }
+  }
+  if (how === 'vin') {
+    const sku = hasStripSupply ? 'supply' : 'psu:9v'
+    add(sku)
+    return { how, pin: 'VIN', title: 'Power from the VIN pin', parts: [sku],
+      tokens: [{ part: sku }, '+ →', { fixed: 'VIN' }, '; − →', { fixed: 'GND' }],
+      note: `VIN takes 7–12 V and the Nano makes its own 5 V${hasStripSupply ? ', so the strips’ supply can run it too' : ''}. ${install}.`,
+      warn: uses5V ? 'Servos and the DFPlayer draw more than the Nano’s regulator can give from VIN. Power from the 5V pin instead.' : null }
+  }
+  return { how, pin: null, title: 'Power from USB', parts: [],
+    tokens: ['Plug the Nano into USB: your computer to install, then a USB phone charger on the layout. Nothing lights until it’s installed.'] }
 }
 
 // --------------------------------------------------------- testing ✅

@@ -6,7 +6,7 @@ import { EFFECTS, byId, PINS, KEY_FIELDS, PIN_CHOICES, PWM_PINS, NO_PIN, pinName
 import { defaultEntry, ordered, availableSources, encodeSettings, buildCommands, generateSketch } from './generate.js'
 import { BUNDLES, bundleFor } from './bundles.js'
 import { pinUses, checkPlan, assignPins, freeTriggerPin, entriesForSet } from './pins.js'
-import { buildKit, partsSummary, TESTS, TROUBLESHOOT, LED_FILL } from './wiring.js'
+import { buildKit, partsSummary, TESTS, TROUBLESHOOT, LED_FILL, POWER } from './wiring.js'
 import { parseHex, findBlock } from './ihex.js'
 import { Stk500, BAUD } from './stk500.js'
 import { supported, WebSerialTransport } from './webserial.js'
@@ -43,7 +43,7 @@ let installing = false
 let lit = null                         // the wiring step being pointed at: { parts:Set, pins:Set }
 
 function load() {
-  const base = { name: 'My Nano', step: 'pick', effects: [], bootloader: 'new', checks: {}, visited: { pick: true }, installed: false }
+  const base = { name: 'My Nano', step: 'pick', effects: [], bootloader: 'new', power: 'usb', checks: {}, visited: { pick: true }, installed: false }
   try {
     const saved = JSON.parse(localStorage.getItem(STORE) || localStorage.getItem('mra-configurator-v1') || 'null')
     if (!saved || !Array.isArray(saved.effects)) return base
@@ -61,6 +61,7 @@ function load() {
       checks: saved.checks || {}, visited: saved.visited || { pick: true },
       step: STEPS.some((s) => s.id === saved.step) ? saved.step : 'pick',
       bootloader: saved.bootloader === 'old' ? 'old' : 'new',
+      power: POWER.includes(saved.power) ? saved.power : 'usb',
     })
   } catch {
     return base
@@ -91,7 +92,7 @@ function announce(text) {
 // --------------------------------------------------------------- render 🖨️
 function render() {
   const keep = document.activeElement?.id
-  const kit = buildKit(state.effects)
+  const kit = buildKit(state.effects, { power: state.power })
   renderSteps(kit)
   renderSheet(kit)
   renderNano(kit)
@@ -217,7 +218,7 @@ function wireSheet(kit) {
     : ['Join every GND wire with', { part: 'wire' }, 'to the Nano’s', { fixed: 'GND' }, 'pin']
   const common = `${single ? '' : '<h2 class="sec">Finish</h2>'}<ol class="wire">
     ${wireItem(++n, { title: 'Join the grounds', tokens: gndTokens, parts: ['wire', ...ledKeys.map((t) => t.part)] }, 'wire:gnd', null, kit)}
-    ${wireItem(++n, { title: 'Plug in USB', tokens: ['Plug the Nano into USB. Nothing lights yet; that’s normal until it’s installed.'], parts: [] }, 'wire:usb', null, kit)}
+    ${wireItem(++n, { ...kit.power, extra: powerPick(kit.power) }, 'wire:usb', null, kit)}
   </ol>`
   const title = single ? `Wire the ${esc(byId[entries[0].id].title.toLowerCase())}` : `Wire ${esc(state.name)}`
   const tips = entries.map((e) => TIPS[e.id]).filter(Boolean)
@@ -244,12 +245,19 @@ function wireItem(num, s, key, e, kit) {
   const opt = s.optional ? ' <span class="opt">optional</span>' : ''
   return `<li class="${checked ? 'is-done' : ''}${s.optional ? ' is-optional' : ''}" data-parts="${s.parts.map((p) => kit.letters.get(p)).join(' ')}" data-pins="${[...pins].join(' ')}">
     <span class="n">${num}</span>
-    <div><h3>${esc(s.title)}${opt}</h3><p class="path">${tokens}</p>${s.note ? `<p class="note">${esc(s.note)}</p>` : ''}</div>
+    <div><h3>${esc(s.title)}${opt}</h3>${s.extra || ''}<p class="path">${tokens}</p>${s.note ? `<p class="note">${esc(s.note)}</p>` : ''}${s.warn ? `<p class="note is-bad">${esc(s.warn)}</p>` : ''}</div>
     ${s.optional ? '<span></span>' : `<label class="done"><input type="checkbox" id="chk-${key}" data-check="${key}" ${checked ? 'checked' : ''}> Done</label>`}
   </li>`
 }
 
 let gndStepNumber = 0
+
+// 🔋 how the Nano gets power on the layout, chosen right in the last step
+function powerPick(power) {
+  const opts = [['usb', 'USB'], ['5v', '5V pin'], ['vin', 'VIN pin']]
+  return `<fieldset class="power-pick"><legend class="visually-hidden">Power the Nano from</legend>${opts.map(([v, label]) =>
+    `<label for="power-${v}"><input type="radio" id="power-${v}" name="power" value="${v}" data-power ${power.how === v ? 'checked' : ''}> ${label}</label>`).join('')}</fieldset>`
+}
 
 // on narrow screens the parts list is far below, so the letters get a key right here
 function legend(kit) {
@@ -466,7 +474,7 @@ async function install() {
     installing = false
     const btn = $('#install')
     if (btn) btn.disabled = false
-    renderSteps(buildKit(state.effects))
+    renderSteps(buildKit(state.effects, { power: state.power }))
   }
 }
 
@@ -510,7 +518,7 @@ function partArt(p) {
     case 'servo': return s('<rect x="10" y="14" width="40" height="20" rx="2" class="pb"/><circle cx="24" cy="14" r="4" class="pf"/><path d="M24 14l26-8"/><path d="M50 26h20" stroke-width="3"/>')
     case 'strip': return s(`<rect x="4" y="16" width="68" height="12" rx="2" fill="${{ day: '#ffffff', warm: '#fbe2a6', night: '#d6e1f3' }[p.color]}"/>${[14, 30, 46, 62].map((x) => `<rect x="${x - 4}" y="19" width="8" height="6" fill="currentColor" stroke="none"/>`).join('')}`)
     case 'mosfet': return s('<rect x="18" y="8" width="40" height="28" rx="2" class="pf"/><path d="M28 36v6M38 36v6M48 36v6"/><circle cx="38" cy="18" r="4"/>')
-    case 'supply': return s('<rect x="8" y="10" width="40" height="24" rx="4" class="pf"/><path d="M48 22h22"/><text x="15" y="26" font-size="11" fill="currentColor" stroke="none">12 V</text>')
+    case 'supply': case 'psu': return s(`<rect x="8" y="10" width="40" height="24" rx="4" class="pf"/><path d="M48 22h22"/><text x="15" y="26" font-size="11" fill="currentColor" stroke="none">${p.volts}</text>`)
     case 'dfplayer': return s('<rect x="14" y="6" width="48" height="32" rx="2" class="pb"/><rect x="24" y="12" width="28" height="14" class="pf"/><path d="M18 38v4M26 38v4M34 38v4M42 38v4M50 38v4M58 38v4"/>')
     case 'speaker': return s('<circle cx="38" cy="22" r="16" class="pf"/><circle cx="38" cy="22" r="7" class="pi"/>')
     case 'sd': return s('<path d="M28 8h18l6 6v22H28z" class="pf"/><path d="M33 8v6M38 8v6M43 8v6"/>')
@@ -539,7 +547,7 @@ function renderNano(kit) {
   const used = new Set(uses.map((u) => u.pin))
   const hole = (label, x, y, ty) => {
     const n = pinNumber(label)
-    const on = (n != null && used.has(n)) || (label === 'GND' && kit.parts.length > 0) || (label === '5V' && kit.uses5V)
+    const on = (n != null && used.has(n)) || (label === 'GND' && kit.parts.length > 0) || (label === '5V' && kit.uses5V) || label === kit.power.pin
     const isBad = n != null && bad.has(n)
     const isLit = lit && (n != null ? lit.pins.has(n) : lit.pins.has(label))
     const pwm = PWM_PINS.includes(n) ? '~' : ''
@@ -603,6 +611,7 @@ function wireUp(sheet) {
   sheet.querySelectorAll('[data-go]').forEach((b) => b.addEventListener('click', () => {
     go(b.dataset.go)
   }))
+  sheet.querySelectorAll('[data-power]').forEach((r) => r.addEventListener('change', () => { state.power = r.value; changed() }))
   sheet.querySelectorAll('[data-print]').forEach((b) => b.addEventListener('click', () => window.print()))
   sheet.querySelectorAll('[data-toggle]').forEach((b) => b.addEventListener('click', () => toggleEffect(b.dataset.toggle)))
   sheet.querySelectorAll('[data-set]').forEach((b) => b.addEventListener('click', () => useSet(b.dataset.set)))
