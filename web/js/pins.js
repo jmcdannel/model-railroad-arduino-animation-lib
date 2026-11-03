@@ -2,7 +2,7 @@
 // clashes. Mirrors the checks in examples/multi-effect.
 import schema from './schema.js'
 import { byId, PINS, PWM_PINS, PIN_CHOICES, NO_PIN, pinName } from './effects.js'
-import { ordered } from './generate.js'
+import { ordered, defaultEntry } from './generate.js'
 
 const SERVO_TIMER_PINS = [9, 10]
 const usesServo = (entries) => entries.some((e) => byId[e.id].usesServoTimer)
@@ -72,4 +72,19 @@ export function freeTriggerPin(entries, entry) {
   const taken = new Set(pinUses(entries.filter((e) => e !== entry)).map((u) => u.pin))
   for (const o of byId[entry.id].objects) for (const p of Object.values(entry.pins[o.cls])) taken.add(p)
   return [14, 15, 16, 17, 18, 19, 12, 13, 2, 4, 7, 8].find((p) => !taken.has(p)) ?? 12
+}
+
+// 📦 the board for a ready-made set: effects already on the board keep their
+// pins and settings, the rest are added with free pins and linked as the set says
+export function entriesForSet(set, current) {
+  const entries = current.filter((e) => set.effects.includes(e.id))
+  for (const id of set.effects) {
+    if (entries.some((e) => e.id === id)) continue
+    const base = defaultEntry(id)
+    for (const [cls, pins] of Object.entries(set.pins?.[id] || {})) Object.assign(base.pins[cls], pins)
+    const e = assignPins(base, entries)
+    if (set.links?.[id]) e.source = set.links[id]
+    entries.push(e)
+  }
+  return entries
 }
