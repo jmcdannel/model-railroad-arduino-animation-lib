@@ -233,3 +233,39 @@ ul.uses .who { color: var(--mute); }
   .actions { flex-wrap: wrap; }
   .actions .prog { order: 3; width: 100%; }
 }
+
+/* 🖨️ printed wiring sheet: parts and pin map first, then the numbered steps
+   to tick off at the bench. Always light, whatever the screen theme. */
+.print-only { display: none; }
+@media print {
+  :root {
+    --ink: #141414; --mute: #5b5b58; --faint: #8f8e88; --rule: #d6d5cf; --edge: #cfcec8;
+    --paper: #ffffff; --shade: #f6f5f1; --yellow-soft: #fdf3cf;
+    --blue: #2d5da8; --blue-soft: #e6edf8; --ok: #1d7a46; --ok-soft: #e5f2ea; --bad: #b8322a; --bad-soft: #fbe9e7;
+    color-scheme: light;
+  }
+  @page { margin: 12mm 14mm; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { font-size: 11pt; background: #fff; }
+  .print-only { display: inline; }
+  .screen-only, .skip, .top, .actions, .spacer, .legend, .done, .meters, aside > .status:not(.is-bad), #announcer, noscript { display: none !important; }
+  .body { display: flex; flex-direction: column; min-height: 0; }
+  aside { order: -1; position: static; max-height: none; overflow: visible; border: 0; padding: 0 0 14px; gap: 12px; border-bottom: 2px solid var(--ink); }
+  main { padding: 16px 0 0; }
+  h1 { font-size: 24pt; }
+  .lede { margin: 4px 0 12px; font-size: 12pt; }
+  .tree { grid-template-columns: repeat(5, minmax(0, 1fr)); row-gap: 18px; padding: 16px 10px 8px; break-inside: avoid; }
+  .nano-map { max-width: 150mm; }
+  .uses { columns: 2; }
+  h2.sec { font-size: 16pt; margin-top: 16px; break-after: avoid; }
+  ol.wire li { grid-template-columns: 40px minmax(0, 1fr); padding: 8px 0; break-inside: avoid; }
+  ol.wire h3 { font-size: 13pt; }
+  .n { width: 30px; height: 30px; font-size: 15px; }
+  li.is-done .n { background: var(--paper); color: var(--ink); }
+  li.is-done h3, li.is-done .path { color: var(--ink); }
+  li.is-lit, .part.is-lit { background: none; }
+  .nano-map .pinhole.is-lit { stroke: var(--blue); stroke-width: 2; }
+  select.pin-pick, .path select.pin-pick { appearance: none; -webkit-appearance: none; border: 0; padding: 0 2px; min-height: 0; background: none; }
+  .tip { break-inside: avoid; }
+}
+

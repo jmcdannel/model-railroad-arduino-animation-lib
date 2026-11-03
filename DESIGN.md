@@ -256,6 +256,8 @@ Responsive: at 1080px and below, "Your Nano" drops below the sheet (ink rule mov
 
 Spacing runs on a loose 4px base (4, 8, 12, 16, 24, 32), with 56px sheet gutters on desktop.
 
+Print 🖨️: the Wire it sheet prints as a bench sheet, always in light colors. "Your Nano" comes first (parts tree in five columns, pin map, pin list), then the numbered steps. Pins print as plain text, every step number prints as an empty circle to tick by hand, and rows never split across pages. Navigation, Done toggles, the legend, meters and the footer are left off.
+
 ## Elevation & Depth
 
 Flat. There are no shadows. Depth and grouping come from rule weight: 2px to 3px ink for structure (top bar, column divider, footer, parts tree frame, notices at 1.5px), 1px warm hairlines for rows, and soft tonal washes (lit yellow, selection blue, fault red) for state.
