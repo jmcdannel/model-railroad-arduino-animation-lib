@@ -222,7 +222,7 @@ function wireSheet(kit) {
   const title = single ? `Wire the ${esc(byId[entries[0].id].title.toLowerCase())}` : `Wire ${esc(state.name)}`
   const tips = entries.map((e) => TIPS[e.id]).filter(Boolean)
   return `<h1>${title}</h1>
-    <p class="lede"><b>${total} parts, about ${Math.max(10, n * 3)} minutes.</b> Long LED leg = +. Letters match the parts list.</p>
+    <p class="lede"><b>${total} parts, about ${Math.max(10, n * 3)} minutes.</b> Long LED leg = +. Letters match the parts list.<span class="print-only"> Tick each number as you finish it.</span> <button type="button" class="link-btn screen-only" data-print>Print this sheet</button></p>
     ${legend(kit)}${sections}${common}
     ${tips.map((t) => `<div class="tip"><b>Tip</b><span>${esc(t)}</span></div>`).join('')}`
 }
@@ -603,6 +603,7 @@ function wireUp(sheet) {
   sheet.querySelectorAll('[data-go]').forEach((b) => b.addEventListener('click', () => {
     go(b.dataset.go)
   }))
+  sheet.querySelectorAll('[data-print]').forEach((b) => b.addEventListener('click', () => window.print()))
   sheet.querySelectorAll('[data-toggle]').forEach((b) => b.addEventListener('click', () => toggleEffect(b.dataset.toggle)))
   sheet.querySelectorAll('[data-set]').forEach((b) => b.addEventListener('click', () => useSet(b.dataset.set)))
   sheet.querySelectorAll('[data-check]').forEach((c) => c.addEventListener('change', () => { state.checks[c.dataset.check] = c.checked; changed() }))
