@@ -52,6 +52,9 @@ ways (display, Serial Monitor, DEJA, MQTT), and is meant to be edited.
 |------|--------------|-------|--------|
 | [🚄 Speedometer](examples/speedometer/) 🆕 | two IR sensors → scale mph / km/h on a TM1637 or OLED, serial text/JSON, DEJA sensors, MQTT | Nano or ESP32 | 🧪 compiled + simulated |
 | [🪧 DEJA room sign](examples/deja-room-sign/) 🆕 | the DEJA room code + QR for guests, plus status pages (locos running, track power, server); or a status monitor with no code | ESP32 (C6 LCD or any + OLED) | ✅ ported from the sign on the layout · 🧪 status modes |
+| [🚦 Block detector](examples/block-detector/) 🆕 | which blocks are occupied, from IR / reed / detector boards, ACS712 current sensing or LDRs; fascia LEDs, serial, DEJA sensors over USB or WiFi | Nano or ESP32 | 🧪 compiled + simulated |
+| [🔀 Turnout panel](examples/turnout-panel/) 🆕 | slow-motion servo turnouts with fascia buttons, route LEDs, frog relays and power-off memory; DEJA `turnout` / `servo` commands with DEJA's motion profiles | Nano (pins or PCA9685) or ESP32 | 🧪 compiled + simulated |
+| [🔊 Sound box](examples/sound-box/) 🆕 | a DFPlayer panel: buttons and inputs play once, loop while on, or toggle; DEJA `pin` effects play sounds | Nano or ESP32 | 🧪 compiled + simulated |
 | [🎛️ Servo tuner](examples/servo-tuner/) 🆕 | center servos, find and save end points, test the throw; prints DEJA turnout and crossing-gate numbers. Serial Monitor or knob + button | Nano (pins or PCA9685) | 🧪 compiled + simulated |
 
 More ideas are in [ROADMAP.md](ROADMAP.md).

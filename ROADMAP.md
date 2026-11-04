@@ -93,9 +93,15 @@ Monitor, plugged into DEJA, or over MQTT. Simple enough to edit by hand.
   (`ROOM_SIGN_MQTT=true`). A generic version of the sign on Tamarack
   Junction, plus a status-monitor mode with no room code.
 
-Ideas for later: block occupancy detector (current sense) as DEJA sensors,
-turnout panel with a servo, frog relay and fascia LEDs, ABS signal heads
-driven by DEJA blocks, a fast-clock display, a sound trigger box.
+- ✅ **🚦 Block detector:** IR, reed, detector boards, ACS712 current or
+  LDRs per block → fascia LEDs, serial, DEJA sensors over USB or MQTT.
+- ✅ **🔀 Turnout panel:** servo turnouts with buttons, route LEDs, frog
+  relays and memory; takes DEJA `turnout` / `servo` commands.
+- ✅ **🔊 Sound box:** DFPlayer clips from buttons, inputs and DEJA `pin`
+  effects.
+
+Ideas for later: ABS signal heads driven by DEJA blocks, a fast-clock
+display.
 
 ## 3️⃣ Share it
 
