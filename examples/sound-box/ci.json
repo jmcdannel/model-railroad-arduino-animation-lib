@@ -1,0 +1,8 @@
+[
+  { "name": "nano, serial text", "fqbn": "arduino:avr:nano" },
+  { "name": "nano, DEJA USB + knob, no BUSY", "fqbn": "arduino:avr:nano",
+    "set": { "SERIAL_MODE": "SERIAL_DEJA", "VOLUME_KNOB_PIN": "A0", "BUSY_PIN": "-1" } },
+  { "name": "esp32, DEJA MQTT", "fqbn": "esp32:esp32:esp32",
+    "set": { "USE_MQTT": "true", "SERIAL_MODE": "SERIAL_DEJA", "PLAYER_TX_PIN": "17", "BUSY_PIN": "16" },
+    "replace": [["{ 2,  TO_GND", "{ 25, TO_GND"], ["{ 3,  TO_GND", "{ 26, TO_GND"], ["{ 4,  TO_GND", "{ 27, TO_GND"]] }
+]
