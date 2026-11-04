@@ -1,0 +1,9 @@
+[
+  { "name": "C6 LCD, room code", "fqbn": "esp32:esp32:esp32c6:CDCOnBoot=cdc,FlashSize=8M,PartitionScheme=default_8MB" },
+  { "name": "C6 LCD, status monitor", "fqbn": "esp32:esp32:esp32c6:CDCOnBoot=cdc,FlashSize=8M,PartitionScheme=default_8MB",
+    "set": { "SHOW_ROOM_CODE": "false" } },
+  { "name": "ESP32 + OLED, room code", "fqbn": "esp32:esp32:esp32",
+    "set": { "BOARD": "BOARD_OLED" } },
+  { "name": "ESP32 + OLED, status monitor", "fqbn": "esp32:esp32:esp32",
+    "set": { "BOARD": "BOARD_OLED", "SHOW_ROOM_CODE": "false" } }
+]
