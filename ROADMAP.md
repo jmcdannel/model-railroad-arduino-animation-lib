@@ -87,11 +87,11 @@ Monitor, plugged into DEJA, or over MQTT. Simple enough to edit by hand.
   the numbers to paste into DEJA (same 0–180 → 650–2350 µs mapping as
   DEJA's own firmware) or into the crossing-gates sketch. Serial keys, or a
   knob and a button with no computer.
-- **🪧 DEJA room sign:** an ESP32 with a screen showing the guest room code
+- ✅ **🪧 DEJA room sign:** an ESP32 with a screen showing the guest room code
   and a QR to join, plus status pages (locos running, track power, server
   health). Reads the feeds the DEJA server already publishes on MQTT
   (`ROOM_SIGN_MQTT=true`). A generic version of the sign on Tamarack
-  Junction.
+  Junction, plus a status-monitor mode with no room code.
 
 Ideas for later: block occupancy detector (current sense) as DEJA sensors,
 turnout panel with a servo, frog relay and fascia LEDs, ABS signal heads

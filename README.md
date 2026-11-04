@@ -51,10 +51,10 @@ ways (display, Serial Monitor, DEJA, MQTT), and is meant to be edited.
 | Tool | What it does | Board | Status |
 |------|--------------|-------|--------|
 | [🚄 Speedometer](examples/speedometer/) 🆕 | two IR sensors → scale mph / km/h on a TM1637 or OLED, serial text/JSON, DEJA sensors, MQTT | Nano or ESP32 | 🧪 compiled + simulated |
+| [🪧 DEJA room sign](examples/deja-room-sign/) 🆕 | the DEJA room code + QR for guests, plus status pages (locos running, track power, server); or a status monitor with no code | ESP32 (C6 LCD or any + OLED) | ✅ ported from the sign on the layout · 🧪 status modes |
 | [🎛️ Servo tuner](examples/servo-tuner/) 🆕 | center servos, find and save end points, test the throw; prints DEJA turnout and crossing-gate numbers. Serial Monitor or knob + button | Nano (pins or PCA9685) | 🧪 compiled + simulated |
 
-Coming next: a 🪧 DEJA room sign (the guest room code plus layout
-status). See [ROADMAP.md](ROADMAP.md).
+More ideas are in [ROADMAP.md](ROADMAP.md).
 
 ## 🧰 How it's built
 
