@@ -72,6 +72,31 @@ flash, so there's no single "everything" firmware. Instead:
   Web Serial needs a real board.
 - More themed sets, if people ask for particular combinations.
 
+## 🧰 Layout tools (in progress)
+
+The collection is growing past animation into a model railroad Arduino kit
+(a repo rename may follow). Tools are standalone sketches in `examples/`,
+one file each with numbered settings blocks at the top, and every one can
+be used more than one way: on its own with a display, from the Serial
+Monitor, plugged into DEJA, or over MQTT. Simple enough to edit by hand.
+
+- ✅ **🚄 Speedometer:** two IR sensors at a known gap → scale speed.
+  TM1637 or OLED, serial text or JSON, DEJA USB sensors, MQTT on an ESP32.
+- **🎛️ Servo tuner:** a Nano (or PCA9685 board) on the bench: center a
+  servo, nudge it, find and save both end points, test the throw, then print
+  the numbers to paste into DEJA (same 0–180 → 650–2350 µs mapping as
+  DEJA's own firmware) or into the crossing-gates sketch. Serial keys, or a
+  knob and a button with no computer.
+- **🪧 DEJA room sign:** an ESP32 with a screen showing the guest room code
+  and a QR to join, plus status pages (locos running, track power, server
+  health). Reads the feeds the DEJA server already publishes on MQTT
+  (`ROOM_SIGN_MQTT=true`). A generic version of the sign on Tamarack
+  Junction.
+
+Ideas for later: block occupancy detector (current sense) as DEJA sensors,
+turnout panel with a servo, frog relay and fascia LEDs, ABS signal heads
+driven by DEJA blocks, a fast-clock display, a sound trigger box.
+
 ## 3️⃣ Share it
 
 - 📦 List it in the Arduino Library Manager, so it appears in the IDE's
