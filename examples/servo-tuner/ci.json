@@ -1,0 +1,7 @@
+[
+  { "name": "nano pins, serial only", "fqbn": "arduino:avr:nano" },
+  { "name": "nano pins, knob + buttons", "fqbn": "arduino:avr:nano",
+    "set": { "KNOB_PIN": "A0", "BUTTON_PIN": "2", "MARK_PIN": "3" } },
+  { "name": "PCA9685, knob + button", "fqbn": "arduino:avr:nano",
+    "set": { "DRIVER": "DRIVER_PCA9685", "KNOB_PIN": "A0", "BUTTON_PIN": "2" } }
+]
