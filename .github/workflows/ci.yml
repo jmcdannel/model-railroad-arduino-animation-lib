@@ -41,8 +41,6 @@ jobs:
     name: Compile sketches
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    env:
-      FQBN: arduino:avr:nano
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -50,32 +48,8 @@ jobs:
 
       - uses: ./.github/actions/setup-arduino
 
-      - name: 🧪 Compile every example for the Nano (against this repo's src/)
-        run: |
-          {
-            echo "## 📏 Sketch sizes (Arduino Nano: 30,720 B flash, 2,048 B RAM)"
-            echo
-            echo "| Sketch | Flash | RAM |"
-            echo "|---|---|---|"
-          } >> "$GITHUB_STEP_SUMMARY"
-          status=0
-          for ino in $(git ls-files '*.ino'); do
-            dir=$(dirname "$ino")
-            echo "::group::$dir"
-            if out=$(arduino-cli compile --fqbn "$FQBN" --library "$GITHUB_WORKSPACE" --warnings default "$dir" 2>&1); then
-              echo "$out"
-              flash=$(echo "$out" | sed -nE 's/^Sketch uses ([0-9]+) bytes \(([0-9]+)%\).*/\1 B (\2%)/p')
-              ram=$(echo "$out" | sed -nE 's/^Global variables use ([0-9]+) bytes \(([0-9]+)%\).*/\1 B (\2%)/p')
-              echo "| \`$dir\` | $flash | $ram |" >> "$GITHUB_STEP_SUMMARY"
-            else
-              echo "$out"
-              echo "::error file=$ino::$dir failed to compile"
-              echo "| \`$dir\` | ❌ failed | |" >> "$GITHUB_STEP_SUMMARY"
-              status=1
-            fi
-            echo "::endgroup::"
-          done
-          exit $status
+      - name: 🧪 Compile every sketch for the Nano (against this repo's src/)
+        run: node tools/compile-sketches.mjs --board arduino:avr --summary "$GITHUB_STEP_SUMMARY"
 
       - name: 🧬 Web schema is up to date with src/
         run: node tools/gen-schema.mjs --check
@@ -90,3 +64,28 @@ jobs:
 
       - name: 🔍 Firmwares and web page agree byte for byte
         run: node tools/check-firmware.mjs build/firmware
+
+  # 📡 ESP32 builds (speedometer + MQTT, room sign…). Not a required check:
+  # the ESP32 core is a big download, so it's cached and kept off the fast path.
+  compile-esp32:
+    name: Compile ESP32 sketches
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/.arduino15
+            ~/Arduino/libraries
+          key: arduino-esp32-${{ hashFiles('.github/actions/setup-arduino/action.yml') }}
+
+      - uses: ./.github/actions/setup-arduino
+        with:
+          esp32: 'true'
+
+      - name: 🧪 Compile every ESP32 build
+        run: node tools/compile-sketches.mjs --board esp32 --summary "$GITHUB_STEP_SUMMARY"

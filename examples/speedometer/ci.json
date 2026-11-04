@@ -1,0 +1,10 @@
+[
+  { "name": "nano, serial text", "fqbn": "arduino:avr:nano" },
+  { "name": "nano, TM1637 + JSON", "fqbn": "arduino:avr:nano",
+    "set": { "DISPLAY_TYPE": "DISPLAY_TM1637", "SERIAL_MODE": "SERIAL_JSON" } },
+  { "name": "nano, OLED + DEJA", "fqbn": "arduino:avr:nano",
+    "set": { "DISPLAY_TYPE": "DISPLAY_OLED", "SERIAL_MODE": "SERIAL_DEJA" } },
+  { "name": "esp32, OLED + MQTT", "fqbn": "esp32:esp32:esp32",
+    "set": { "DISPLAY_TYPE": "DISPLAY_OLED", "USE_MQTT": "true",
+             "SENSOR_A_PIN": "32", "SENSOR_B_PIN": "33" } }
+]

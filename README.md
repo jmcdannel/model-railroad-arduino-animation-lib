@@ -42,6 +42,20 @@ hasn't been flashed to a real board yet. The six original effects were
 ported to modules with identical output to the old sketches (checked over
 30 simulated minutes each).
 
+## 🧰 Layout tools
+
+Standalone sketches for running and tuning a layout rather than animating
+it. Each one is a single file with its settings at the top, works several
+ways (display, Serial Monitor, DEJA, MQTT), and is meant to be edited.
+
+| Tool | What it does | Board | Status |
+|------|--------------|-------|--------|
+| [🚄 Speedometer](examples/speedometer/) 🆕 | two IR sensors → scale mph / km/h on a TM1637 or OLED, serial text/JSON, DEJA sensors, MQTT | Nano or ESP32 | 🧪 compiled + simulated |
+
+Coming next: a 🎛️ servo tuner (center a servo and find its end points, in
+DEJA's own units) and a 🪧 DEJA room sign (the guest room code plus layout
+status). See [ROADMAP.md](ROADMAP.md).
+
 ## 🧰 How it's built
 
 ```
