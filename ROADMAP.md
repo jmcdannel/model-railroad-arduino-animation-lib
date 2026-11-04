@@ -82,7 +82,7 @@ Monitor, plugged into DEJA, or over MQTT. Simple enough to edit by hand.
 
 - ✅ **🚄 Speedometer:** two IR sensors at a known gap → scale speed.
   TM1637 or OLED, serial text or JSON, DEJA USB sensors, MQTT on an ESP32.
-- **🎛️ Servo tuner:** a Nano (or PCA9685 board) on the bench: center a
+- ✅ **🎛️ Servo tuner:** a Nano (or PCA9685 board) on the bench: center a
   servo, nudge it, find and save both end points, test the throw, then print
   the numbers to paste into DEJA (same 0–180 → 650–2350 µs mapping as
   DEJA's own firmware) or into the crossing-gates sketch. Serial keys, or a
