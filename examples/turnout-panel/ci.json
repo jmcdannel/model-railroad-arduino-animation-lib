@@ -1,0 +1,10 @@
+[
+  { "name": "nano pins, serial text", "fqbn": "arduino:avr:nano" },
+  { "name": "nano PCA9685, DEJA USB", "fqbn": "arduino:avr:nano",
+    "set": { "DRIVER": "DRIVER_PCA9685", "SERIAL_MODE": "SERIAL_DEJA" },
+    "replace": [["{ \"Yard lead\",  9,", "{ \"Yard lead\",  0,"], ["{ \"Siding\",    10,", "{ \"Siding\",    1,"]] },
+  { "name": "esp32 PCA9685, DEJA MQTT", "fqbn": "esp32:esp32:esp32",
+    "set": { "DRIVER": "DRIVER_PCA9685", "SERIAL_MODE": "SERIAL_DEJA", "USE_MQTT": "true" },
+    "replace": [["{ \"Yard lead\",  9, 72, 108, 2, 4, 5, 6 }", "{ \"Yard lead\",  0, 72, 108, 25, 26, 27, 32 }"],
+                ["{ \"Siding\",    10, 80, 100, 3, 7, 8, NO_PIN }", "{ \"Siding\",    1, 80, 100, 33, 18, 19, NO_PIN }"]] }
+]

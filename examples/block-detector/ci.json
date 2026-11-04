@@ -1,0 +1,46 @@
+[
+  {
+    "name": "nano, serial text",
+    "fqbn": "arduino:avr:nano"
+  },
+  {
+    "name": "nano, DEJA USB",
+    "fqbn": "arduino:avr:nano",
+    "set": {
+      "SERIAL_MODE": "SERIAL_DEJA"
+    }
+  },
+  {
+    "name": "nano, JSON",
+    "fqbn": "arduino:avr:nano",
+    "set": {
+      "SERIAL_MODE": "SERIAL_JSON"
+    }
+  },
+  {
+    "name": "esp32, DEJA MQTT",
+    "fqbn": "esp32:esp32:esp32",
+    "set": {
+      "USE_MQTT": "true",
+      "SERIAL_MODE": "SERIAL_DEJA"
+    },
+    "replace": [
+      [
+        "{ \"Main east\",  2,  DETECT_DIGITAL, 8 }",
+        "{ \"Main east\",  25, DETECT_DIGITAL, 18 }"
+      ],
+      [
+        "{ \"Main west\",  3,  DETECT_DIGITAL, 9 }",
+        "{ \"Main west\",  26, DETECT_DIGITAL, 19 }"
+      ],
+      [
+        "A0, DETECT_CURRENT, 10",
+        "34, DETECT_CURRENT, 16"
+      ],
+      [
+        "A1, DETECT_LIGHT,   11",
+        "35, DETECT_LIGHT,   17"
+      ]
+    ]
+  }
+]

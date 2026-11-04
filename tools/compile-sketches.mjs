@@ -14,6 +14,7 @@
 //
 // "set" rewrites `#define NAME value` lines in the sketch's .ino (in a temp
 // copy), so the variants are exactly what a user gets by editing the file.
+// "replace": [["from", "to"], …] swaps literal text too (e.g. pin tables).
 import { execFileSync } from 'node:child_process'
 import { cpSync, existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync, appendFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
@@ -51,12 +52,17 @@ for (const dir of dirs) {
     if (!(b.fqbn || NANO).startsWith(board)) continue
     const label = `${name}${b.name ? ` (${b.name})` : ''}`
     let src = dir, tmp = null
-    if (b.set) {
+    if (b.set || b.replace) {
       tmp = mkdtempSync(join(tmpdir(), 'sketch-'))
       src = join(tmp, name)
       cpSync(dir, src, { recursive: true })
       const ino = join(src, `${name}.ino`)
-      writeFileSync(ino, applySet(readFileSync(ino, 'utf8'), b.set, `${name}.ino`))
+      let text = applySet(readFileSync(ino, 'utf8'), b.set || {}, `${name}.ino`)
+      for (const [from, to] of b.replace || []) {
+        if (!text.includes(from)) throw new Error(`${name}.ino: no "${from}" to replace`)
+        text = text.split(from).join(to)
+      }
+      writeFileSync(ino, text)
     }
     process.stdout.write(`::group::${label}\n`)
     try {
